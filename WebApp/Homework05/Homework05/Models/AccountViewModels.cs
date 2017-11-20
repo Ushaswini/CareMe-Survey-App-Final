@@ -33,6 +33,8 @@ namespace Homework05.Models
 
         public string SurveyGroupId { get; set; }
         public string Id { get; set; }
+
+        public string DeviceId { get; set; }
         public bool HasRegistered { get; set; }
 
         public string LoginProvider { get; set; }

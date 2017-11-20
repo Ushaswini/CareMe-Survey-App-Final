@@ -1,13 +1,16 @@
 ﻿using Homework05.DTOs;
 using Homework05.Identity;
+using Homework05.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Homework05.API_Controllers
 {
@@ -15,6 +18,8 @@ namespace Homework05.API_Controllers
     [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationRoleManager _AppRoleManager = null;
 
         protected ApplicationRoleManager AppRoleManager
@@ -74,6 +79,39 @@ namespace Homework05.API_Controllers
                 }).ToList();
 
             return roleUsers;
+        }
+
+        [ResponseType(typeof(void))]
+        public IHttpActionResult UpdateDeviceId(UserInfoViewModel user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }            
+            db.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(user.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        private bool UserExists(string id)
+        {
+            return db.Users.Count(e => e.Id == id) > 0;
         }
     }
 }

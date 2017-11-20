@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Homework05.DTOs;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace Homework05.Models
 
         //Navigation Properties
         public StudyGroup StudyGroup { get; set; }
+
     }
 
     public enum Frequency
@@ -58,10 +61,25 @@ namespace Homework05.Models
         public ApplicationUser StudyCoordinator { get; set; }
     }
 
-    public class SurveyQuestionAnswer
+    public class SurveyPushNotification
     {
-        public int QuestionNumber { get; set; }
-        public int AnswerValue { get; set; }
-        public string AnswerText { get; set; }
+        [JsonProperty(propertyName: "registration_ids")]
+        public List<string> RegisteredDeviceIds { get; set; }
+        [JsonProperty(propertyName: "data")]
+        public PushNotificationData Data { get; set; }
+    }
+
+    public class PushNotificationData
+    {
+        [JsonProperty(propertyName:"message")]
+        public string Message { get; set; }
+        [JsonProperty(propertyName: "time")]
+        public string Time { get; set; }
+    }
+
+    public class SurveysForUser
+    {
+        public List<ResponseDTO> SurveysResponded { get; set; }
+        public List<SurveyDTO> Surveys { get; set; }
     }
 }

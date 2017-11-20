@@ -9,9 +9,13 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Homework05.Models;
+using Homework05.DTOs;
+using System.Data.Entity.Validation;
 
 namespace Homework05.API_Controllers
 {
+    [Authorize]
+    [RoutePrefix("api/SurveyResponses")]
     public class SurveyResponsesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -20,6 +24,48 @@ namespace Homework05.API_Controllers
         public IQueryable<SurveyResponse> GetSurveyResponses()
         {
             return db.SurveyResponses;
+        }
+        [ResponseType(typeof(SurveyResponse))]
+        public IList<ResponseDTO> GetSurveyResponseForStudy(string studyGroupId)
+        {
+            var result = db.SurveyResponses.Include(r => r.StudyGroup)
+                                            .Include(r => r.Survey)
+                                            .Include(r => r.User).Where(r => r.StudyGroupId == studyGroupId)
+                                            .Select(r => new ResponseDTO
+                                            {
+                                                StudyGroupName = r.StudyGroup.StudyName,
+                                                SurveyId = r.SurveyId,
+                                                UserName = r.User.UserName,
+                                                ResponseReceivedTime = r.SurveyResponseReceivedTime,
+                                                ResponseText = r.UserResponseText,
+                                                QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
+                                                SurveyQuestion = r.Survey.QuestionText
+                                                // SurveyComments = r.SurveyComments
+                                            });
+            return result.ToList();
+
+        }
+
+        [ResponseType(typeof(SurveyResponse))]
+        public IList<ResponseDTO> GetSurveyResponseOfUser(string userId)
+        {
+            var result = db.SurveyResponses.Include(r => r.StudyGroup)
+                                            .Include(r => r.Survey)
+                                            .Include(r => r.User).Where(r => r.UserId == userId)
+                                            .Select(r => new ResponseDTO
+                                            {
+                                                ResponseId = r.SurveyResponseId,
+                                                StudyGroupName = r.StudyGroup.StudyName,
+                                                SurveyId = r.SurveyId,
+                                                UserName = r.User.UserName,
+                                                ResponseReceivedTime = r.SurveyResponseReceivedTime,
+                                                ResponseText = r.UserResponseText,
+                                                QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
+                                                SurveyQuestion = r.Survey.QuestionText
+                                                // SurveyComments = r.SurveyComments
+                                            });
+            return result.ToList();
+
         }
 
         // GET: api/SurveyResponses/5
@@ -78,7 +124,7 @@ namespace Homework05.API_Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            surveyResponse.SurveyResponseId = System.Guid.NewGuid().ToString();
             db.SurveyResponses.Add(surveyResponse);
 
             try
@@ -95,6 +141,22 @@ namespace Homework05.API_Controllers
                 {
                     throw;
                 }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                // Retrieve the error messages as a list of strings.
+                var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
+
+                // Join the list to a single string.
+                var fullErrorMessage = string.Join("; ", errorMessages);
+
+                // Combine the original exception message with the new one.
+                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                // Throw a new DbEntityValidationException with the improved exception message.
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
             }
 
             return CreatedAtRoute("DefaultApi", new { id = surveyResponse.SurveyResponseId }, surveyResponse);

@@ -10,7 +10,9 @@ namespace Homework05.Models
     public class ApplicationUser : IdentityUser
     {
         public string StudyGroupId { get; set; }
-        public string Gender { get; set; }       
+        public string Gender { get; set; }   
+        
+        public string DeviceId { get; set; }
 
         //Navigation Properties
         public StudyGroup StudyGroup { get; set; }

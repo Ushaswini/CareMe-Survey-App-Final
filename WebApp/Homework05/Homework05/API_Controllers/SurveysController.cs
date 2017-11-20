@@ -13,9 +13,12 @@ using Homework05.DTOs;
 using System.Text;
 using System.IO;
 using Hangfire;
+using Newtonsoft.Json;
 
 namespace Homework05.API_Controllers
 {
+    [Authorize]
+    [RoutePrefix("api/Surveys")]
     public class SurveysController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -47,6 +50,40 @@ namespace Homework05.API_Controllers
             });
 
             return surveys.ToList();
+        }
+
+        [Route("GetSurvey")]
+        public SurveysForUser GetSurveysForUser(string userId)
+        {
+            var surveysTaken = db.SurveyResponses.Where(s => s.UserId == userId).Select(s => s.SurveyId).ToList();
+
+            var surveysResponded = db.SurveyResponses.Include(r => r.StudyGroup)
+                                            .Include(r => r.Survey)
+                                            .Include(r => r.User).Where(r => r.UserId == userId)
+                                            .Select(r => new ResponseDTO
+                                            {
+                                                ResponseId = r.SurveyResponseId,
+                                                StudyGroupName = r.StudyGroup.StudyName,
+                                                SurveyId = r.SurveyId,
+                                                UserName = r.User.UserName,
+                                                ResponseReceivedTime = r.SurveyResponseReceivedTime,
+                                                ResponseText = r.UserResponseText,
+                                                QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
+                                                SurveyQuestion = r.Survey.QuestionText
+                                                // SurveyComments = r.SurveyComments
+                                            }).ToList();
+            var surveys = (from r in db.Surveys
+                          where !surveysTaken.Contains(r.SurveyId)
+                          select new SurveyDTO
+                          {
+                            SurveyId = r.SurveyId,
+                            SurveyCreatedTime = r.SurveyCreatedTime,
+                            QuestionText = r.QuestionText,
+                            StudyGroupId = r.StudyGroupId,
+                            StudyGroupName = r.StudyGroup.StudyName
+                          }).ToList();
+ 
+            return new SurveysForUser { Surveys = surveys, SurveysResponded = surveysResponded };
         }
 
 
@@ -159,40 +196,62 @@ namespace Homework05.API_Controllers
         }
 
         public void SendNotification(Survey survey)
-        {
-            var applicationID = "AIzaSyC0Ian0Yr7JK9tZEi7-dZ3GcO-2dzomG1M";
-            // applicationID means google Api key 
-            var SENDER_ID = "283278634859";
-            // SENDER_ID is nothing but your ProjectID (from API Console- google code)                                                                             
+        {            
+            List<string> deviceIds = new List<string>();  
+            var usersInGroup = db.Users.Where(u => u.StudyGroupId.Equals(survey.StudyGroupId)).ToList();
+            foreach(var user in usersInGroup)
+            {
+                if(user.DeviceId != null)
+                    deviceIds.Add(user.DeviceId);
+            }
+            //deviceIds.RemoveAt(0);
+            //deviceIds.Add("ebR53cvFzu8:APA91bHk0D_Bwth1jeD-pJ4Q3aztg8C8USt8qFf5_fOV4aflIMVqjoc0HsAYQARcUfik3NfkuQG21jh265tJzBi7efPXw77__JEzaDSbPG8rAiZBTguobpNEjCPnCUPzM9zawIpgcO2o");
+            SurveyPushNotification notification = new SurveyPushNotification {
+                RegisteredDeviceIds = deviceIds,
+                Data = new PushNotificationData
+                {
+                    Message = survey.QuestionText,
+                    Time = DateTime.Now.ToString()
+                }
 
-            WebRequest tRequest;
+            };
+            if(deviceIds.Count > 0)
+            {
+                var applicationID = "AIzaSyC0Ian0Yr7JK9tZEi7-dZ3GcO-2dzomG1M";
+                // applicationID means google Api key 
+                var SENDER_ID = "283278634859";
+                // SENDER_ID is nothing but your ProjectID (from API Console- google code)  
 
-            tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
+                string serializedNotification = JsonConvert.SerializeObject(notification);
 
-            tRequest.Method = "post";
+                WebRequest tRequest;
 
-            tRequest.ContentType = " application/json";
+                tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
 
-            tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
+                tRequest.Method = "post";
 
-            tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+                tRequest.ContentType = " application/json";
 
-            string postData = "{\"collapse_key\":\"score_update\",\"time_to_live\":108,\"delay_while_idle\":true,\"data\": { \"message\" : " + "\"" + survey.QuestionText + "\",\"time\": " + "\"" + System.DateTime.Now.ToString() + "\"},\"registration_ids\":[\"" + "AAAAQfS472s:APA91bFkVobFc9H0Jvxom5_z6aYyGWCoIgZkv_U2-7qT4yUcKvgKvl_ZdCyEoyYDDWihiCfxe5u7mk_KXItsVGeB-mW4-_HXMB8B6_pickvBLkoZbFP5VlmT6X2-Lh8S3qiEegv7WkIp" + "\"]}";
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
 
-            Console.WriteLine(postData);
-            Byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-            tRequest.ContentLength = byteArray.Length;
-            Stream dataStream = tRequest.GetRequestStream();
-            dataStream.Write(byteArray, 0, byteArray.Length);
-            dataStream.Close();
-            WebResponse tResponse = tRequest.GetResponse();
-            dataStream = tResponse.GetResponseStream();
-            StreamReader tReader = new StreamReader(dataStream);
-            String sResponseFromServer = tReader.ReadToEnd();   //Get response from GCM server.
-            Console.WriteLine(sResponseFromServer);
-            tReader.Close();
-            dataStream.Close();
-            tResponse.Close();
+                tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+
+                Byte[] byteArray = Encoding.UTF8.GetBytes(serializedNotification);
+                tRequest.ContentLength = byteArray.Length;
+                Stream dataStream = tRequest.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+                WebResponse tResponse = tRequest.GetResponse();
+                dataStream = tResponse.GetResponseStream();
+                StreamReader tReader = new StreamReader(dataStream);
+                String sResponseFromServer = tReader.ReadToEnd();   //Get response from GCM server.
+                Console.WriteLine(sResponseFromServer);
+                tReader.Close();
+                dataStream.Close();
+                tResponse.Close();
+            }
+
+           
         }
 
         // DELETE: api/Surveys/5

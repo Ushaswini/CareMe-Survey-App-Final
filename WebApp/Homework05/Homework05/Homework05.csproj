@@ -259,6 +259,10 @@
     <Compile Include="Migrations\201711191617473_Initial-Models.Designer.cs">
       <DependentUpon>201711191617473_Initial-Models.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711200145302_Device-Id.cs" />
+    <Compile Include="Migrations\201711200145302_Device-Id.Designer.cs">
+      <DependentUpon>201711200145302_Device-Id.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MVC_Controllers\AdminController.cs" />
     <Compile Include="MVC_Controllers\HomeController.cs" />
@@ -382,6 +386,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711191617473_Initial-Models.resx">
       <DependentUpon>201711191617473_Initial-Models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711200145302_Device-Id.resx">
+      <DependentUpon>201711200145302_Device-Id.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
