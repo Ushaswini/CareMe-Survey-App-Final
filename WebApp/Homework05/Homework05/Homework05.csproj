@@ -216,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API_Controllers\BaseApiController.cs" />
+    <Compile Include="API_Controllers\QuestionsController.cs" />
     <Compile Include="API_Controllers\StudyGroupsController.cs" />
     <Compile Include="API_Controllers\SurveyResponsesController.cs" />
     <Compile Include="API_Controllers\SurveysController.cs" />
@@ -263,7 +264,12 @@
     <Compile Include="Migrations\201711200145302_Device-Id.Designer.cs">
       <DependentUpon>201711200145302_Device-Id.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711200629020_Question.cs" />
+    <Compile Include="Migrations\201711200629020_Question.Designer.cs">
+      <DependentUpon>201711200629020_Question.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\QuestionsModels.cs" />
     <Compile Include="MVC_Controllers\AdminController.cs" />
     <Compile Include="MVC_Controllers\HomeController.cs" />
     <Compile Include="DTOs\ResponseDTO.cs" />
@@ -389,6 +395,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711200145302_Device-Id.resx">
       <DependentUpon>201711200145302_Device-Id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711200629020_Question.resx">
+      <DependentUpon>201711200629020_Question.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

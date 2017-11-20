@@ -14,7 +14,7 @@ using System.Web.Http.Description;
 
 namespace Homework05.API_Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
@@ -84,11 +84,13 @@ namespace Homework05.API_Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult UpdateDeviceId(UserInfoViewModel user)
         {
-            if (!ModelState.IsValid)
+            var userToModify = db.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+            if (userToModify == null)
             {
-                return BadRequest(ModelState);
-            }            
-            db.Entry(user).State = EntityState.Modified;
+                return NotFound();
+            }
+            userToModify.DeviceId = user.DeviceId;
+            db.Entry(userToModify).State = EntityState.Modified;
 
             try
             {

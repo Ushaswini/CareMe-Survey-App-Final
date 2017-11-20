@@ -121,3 +121,4 @@ C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\es\Hangfire.Core.resources.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\zh\Hangfire.Core.resources.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Release\Homework05.Migrations.DeviceId.resources
+C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Release\Homework05.Migrations.Question.resources

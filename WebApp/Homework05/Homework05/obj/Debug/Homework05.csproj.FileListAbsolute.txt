@@ -113,7 +113,6 @@ C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\Microsoft.Owin.Cors.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\System.Web.Cors.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\Microsoft.Owin.Cors.xml
-C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.csprojResolveAssemblyReference.cache
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\Hangfire.Core.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\Hangfire.SqlServer.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\Hangfire.Core.xml
@@ -121,3 +120,4 @@ C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\es\Hangfire.Core.resources.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\bin\zh\Hangfire.Core.resources.dll
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.Migrations.DeviceId.resources
+C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.Migrations.Question.resources
