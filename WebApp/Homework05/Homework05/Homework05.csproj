@@ -268,6 +268,14 @@
     <Compile Include="Migrations\201711200629020_Question.Designer.cs">
       <DependentUpon>201711200629020_Question.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711201636006_AddQuestion.cs" />
+    <Compile Include="Migrations\201711201636006_AddQuestion.Designer.cs">
+      <DependentUpon>201711201636006_AddQuestion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711201650489_Question-Options.cs" />
+    <Compile Include="Migrations\201711201650489_Question-Options.Designer.cs">
+      <DependentUpon>201711201650489_Question-Options.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuestionsModels.cs" />
     <Compile Include="MVC_Controllers\AdminController.cs" />
@@ -398,6 +406,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711200629020_Question.resx">
       <DependentUpon>201711200629020_Question.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711201636006_AddQuestion.resx">
+      <DependentUpon>201711201636006_AddQuestion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711201650489_Question-Options.resx">
+      <DependentUpon>201711201650489_Question-Options.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -10,7 +10,7 @@ namespace Homework05.Models
         public string QuestionId { get; set; }
         public string QuestionText { get; set; }
         public QuestionType QuestionType { get; set; }
-        public List<string> Options { get; set; }
+        public string Options { get; set; }
 
     }
 

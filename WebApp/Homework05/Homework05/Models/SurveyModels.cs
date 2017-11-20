@@ -11,7 +11,7 @@ namespace Homework05.Models
     public class Survey
     {
         public string SurveyId { get; set; }
-        public string QuestionText { get; set; }
+        public string QuestionId { get; set; }
         public string StudyGroupId { get; set; }
         public string SurveyCreatedTime { get; set; }
         [EnumDataType(typeof(Frequency))]
@@ -21,6 +21,7 @@ namespace Homework05.Models
 
         //Navigation Properties
         public StudyGroup StudyGroup { get; set; }
+        public Question Question { get; set; }
 
     }
 

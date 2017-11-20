@@ -30,6 +30,7 @@ namespace Homework05.API_Controllers
         {
             var result = db.SurveyResponses.Include(r => r.StudyGroup)
                                             .Include(r => r.Survey)
+                                            .Include(r => r.Survey.Question)
                                             .Include(r => r.User).Where(r => r.StudyGroupId == studyGroupId)
                                             .Select(r => new ResponseDTO
                                             {
@@ -39,7 +40,12 @@ namespace Homework05.API_Controllers
                                                 ResponseReceivedTime = r.SurveyResponseReceivedTime,
                                                 ResponseText = r.UserResponseText,
                                                 QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
-                                                SurveyQuestion = r.Survey.QuestionText
+                                                QuestionText = r.Survey.Question.QuestionText,
+                                                QuestionId = r.Survey.Question.QuestionId,
+                                                QuestionType = r.Survey.Question.QuestionType,
+                                                Options = r.Survey.Question.Options,
+                                                ResponseId = r.SurveyResponseId
+
                                                 // SurveyComments = r.SurveyComments
                                             });
             return result.ToList();
@@ -51,6 +57,7 @@ namespace Homework05.API_Controllers
         {
             var result = db.SurveyResponses.Include(r => r.StudyGroup)
                                             .Include(r => r.Survey)
+                                            .Include(r => r.Survey.Question)
                                             .Include(r => r.User).Where(r => r.UserId == userId)
                                             .Select(r => new ResponseDTO
                                             {
@@ -61,8 +68,10 @@ namespace Homework05.API_Controllers
                                                 ResponseReceivedTime = r.SurveyResponseReceivedTime,
                                                 ResponseText = r.UserResponseText,
                                                 QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
-                                                SurveyQuestion = r.Survey.QuestionText
-                                                // SurveyComments = r.SurveyComments
+                                                QuestionText = r.Survey.Question.QuestionText,
+                                                QuestionId = r.Survey.Question.QuestionId,
+                                                QuestionType = r.Survey.Question.QuestionType,
+                                                Options = r.Survey.Question.Options                                            
                                             });
             return result.ToList();
 

@@ -26,26 +26,38 @@ namespace Homework05.API_Controllers
         // GET: api/Surveys
         public IList<SurveyDTO> GetSurveys()
         {
-            return db.Surveys.Include(s => s.StudyGroup).Select(s => new SurveyDTO
+            return db.Surveys.Include(s => s.StudyGroup).Include(s => s.Question).Select(s => new SurveyDTO
             {
                 SurveyId = s.SurveyId,
                 SurveyCreatedTime = s.SurveyCreatedTime,
-                QuestionText = s.QuestionText,
+                QuestionText = s.Question.QuestionText,
                 StudyGroupId = s.StudyGroupId,
-                StudyGroupName = s.StudyGroup.StudyName
+                StudyGroupName = s.StudyGroup.StudyName,
+                QuestionId = s.QuestionId,
+                QuestionType = s.Question.QuestionType,
+                Options = s.Question.Options,
+                QuestionFrequency = ((Frequency)s.FrequencyOfNotifications).ToString(),
+                Time1 = s.Time1,
+                Time2 = s.Time2
 
             }).ToList();
         }
 
         public IList<SurveyDTO> GetSurveysForStudyGroup(string studyGroupId)
         {
-            var surveys = db.Surveys.Where(s => s.StudyGroupId == studyGroupId).Include(s => s.StudyGroup).Select(s => new SurveyDTO
+            var surveys = db.Surveys.Where(s => s.StudyGroupId == studyGroupId).Include(s => s.Question).Include(s => s.StudyGroup).Select(s => new SurveyDTO
             {
                 SurveyId = s.SurveyId,
                 SurveyCreatedTime = s.SurveyCreatedTime,
-                QuestionText = s.QuestionText,
+                QuestionText = s.Question.QuestionText,
                 StudyGroupId = s.StudyGroupId,
-                StudyGroupName = s.StudyGroup.StudyName
+                StudyGroupName = s.StudyGroup.StudyName,
+                QuestionId = s.QuestionId,
+                QuestionType = s.Question.QuestionType,
+                Options = s.Question.Options,
+                QuestionFrequency = ((Frequency)s.FrequencyOfNotifications).ToString(),
+                Time1 = s.Time1,
+                Time2 = s.Time2
 
             });
 
@@ -59,7 +71,9 @@ namespace Homework05.API_Controllers
 
             var surveysResponded = db.SurveyResponses.Include(r => r.StudyGroup)
                                             .Include(r => r.Survey)
-                                            .Include(r => r.User).Where(r => r.UserId == userId)
+                                            .Include(r => r.User)
+                                            .Include(r => r.Survey.Question)
+                                            .Where(r => r.UserId == userId)
                                             .Select(r => new ResponseDTO
                                             {
                                                 ResponseId = r.SurveyResponseId,
@@ -69,18 +83,27 @@ namespace Homework05.API_Controllers
                                                 ResponseReceivedTime = r.SurveyResponseReceivedTime,
                                                 ResponseText = r.UserResponseText,
                                                 QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
-                                                SurveyQuestion = r.Survey.QuestionText
-                                                // SurveyComments = r.SurveyComments
+                                                QuestionText = r.Survey.Question.QuestionText,
+                                                QuestionId = r.Survey.Question.QuestionId,
+                                                QuestionType = r.Survey.Question.QuestionType,
+                                                Options = r.Survey.Question.Options
                                             }).ToList();
-            var surveys = (from r in db.Surveys
-                          where !surveysTaken.Contains(r.SurveyId)
+
+            var surveys = (from r in db.Surveys.Include("Question")
+                          where !surveysTaken.Contains(r.SurveyId)                          
                           select new SurveyDTO
                           {
                             SurveyId = r.SurveyId,
                             SurveyCreatedTime = r.SurveyCreatedTime,
-                            QuestionText = r.QuestionText,
+                            QuestionText = r.Question.QuestionText,
                             StudyGroupId = r.StudyGroupId,
-                            StudyGroupName = r.StudyGroup.StudyName
+                            StudyGroupName = r.StudyGroup.StudyName,
+                            Options =r.Question.Options,
+                            QuestionId = r.QuestionId,
+                            QuestionType = r.Question.QuestionType,
+                            QuestionFrequency = ((Frequency)r.FrequencyOfNotifications).ToString(),
+                            Time1 = r.Time1,
+                            Time2 = r.Time2
                           }).ToList();
  
             return new SurveysForUser { Surveys = surveys, SurveysResponded = surveysResponded };
@@ -210,7 +233,7 @@ namespace Homework05.API_Controllers
                 RegisteredDeviceIds = deviceIds,
                 Data = new PushNotificationData
                 {
-                    Message = survey.QuestionText,
+                    Message = survey.Question.QuestionText,
                     Time = DateTime.Now.ToString()
                 }
 
