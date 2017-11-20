@@ -213,11 +213,11 @@
 		},
 		{
 			"id": "673fa4c6-5ce7-5ba7-b18d-049bf24b9021",
-			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjA0Zjc0MDdhLTJkY2YtNGRjMC1iZjc2LTIxMjlkNjgwOWU2ZSIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjM3Mjk2LCJuYmYiOjE1MTExNTA4OTZ9.xYzJmv6Z4sXF19xZg_EuhhjJLnlCW0xIai_-BN6eFoo\n",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjgyMzExLCJuYmYiOjE1MTExOTU5MTF9.F7HRAJS8gHO8AIj5t9-3FQiIXG9lY1n-lIRFSVg3b3k\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjA0Zjc0MDdhLTJkY2YtNGRjMC1iZjc2LTIxMjlkNjgwOWU2ZSIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjM3Mjk2LCJuYmYiOjE1MTExNTA4OTZ9.xYzJmv6Z4sXF19xZg_EuhhjJLnlCW0xIai_-BN6eFoo",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjgyMzExLCJuYmYiOjE1MTExOTU5MTF9.F7HRAJS8gHO8AIj5t9-3FQiIXG9lY1n-lIRFSVg3b3k",
 					"description": "",
 					"enabled": true
 				}
@@ -232,30 +232,29 @@
 					"enabled": true
 				}
 			],
+			"preRequestScript": null,
 			"pathVariables": {},
 			"pathVariableData": [],
-			"preRequestScript": null,
 			"method": "GET",
-			"collectionId": "db807332-c9ac-fd97-b118-5f2711c4315a",
 			"data": null,
 			"dataMode": "params",
-			"name": "GetSurveysandResponses",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1511157101343,
 			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
-			"helperAttributes": {}
+			"helperAttributes": {},
+			"time": 1511196934926,
+			"name": "GetSurveysandResponses",
+			"description": "",
+			"collectionId": "db807332-c9ac-fd97-b118-5f2711c4315a",
+			"responses": []
 		},
 		{
 			"id": "72a1fd1e-0ad1-9e2a-f37f-77b521de058e",
-			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjA0Zjc0MDdhLTJkY2YtNGRjMC1iZjc2LTIxMjlkNjgwOWU2ZSIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEwOTYzNjk1LCJuYmYiOjE1MTA4NzcyOTV9.C-FtxsmPHzzuBh914klwhgcPXnjuOPsqvls3Uy8ShDA\n",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjgyMzExLCJuYmYiOjE1MTExOTU5MTF9.F7HRAJS8gHO8AIj5t9-3FQiIXG9lY1n-lIRFSVg3b3k\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjA0Zjc0MDdhLTJkY2YtNGRjMC1iZjc2LTIxMjlkNjgwOWU2ZSIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEwOTYzNjk1LCJuYmYiOjE1MTA4NzcyOTV9.C-FtxsmPHzzuBh914klwhgcPXnjuOPsqvls3Uy8ShDA",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjgyMzExLCJuYmYiOjE1MTExOTU5MTF9.F7HRAJS8gHO8AIj5t9-3FQiIXG9lY1n-lIRFSVg3b3k",
 					"description": "",
 					"enabled": true
 				}
@@ -280,7 +279,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511157444628,
+			"time": 1511196915491,
 			"name": "GetResponsesForStudyGroup",
 			"description": "",
 			"collectionId": "db807332-c9ac-fd97-b118-5f2711c4315a",
@@ -586,11 +585,11 @@
 		},
 		{
 			"id": "f729af49-bfef-4789-6e77-4da82cccd21b",
-			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjA0Zjc0MDdhLTJkY2YtNGRjMC1iZjc2LTIxMjlkNjgwOWU2ZSIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEwOTYzNjk1LCJuYmYiOjE1MTA4NzcyOTV9.C-FtxsmPHzzuBh914klwhgcPXnjuOPsqvls3Uy8ShDA\n",
+			"headers": "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjgyMzExLCJuYmYiOjE1MTExOTU5MTF9.F7HRAJS8gHO8AIj5t9-3FQiIXG9lY1n-lIRFSVg3b3k\n",
 			"headerData": [
 				{
 					"key": "Authorization",
-					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjA0Zjc0MDdhLTJkY2YtNGRjMC1iZjc2LTIxMjlkNjgwOWU2ZSIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTEwOTYzNjk1LCJuYmYiOjE1MTA4NzcyOTV9.C-FtxsmPHzzuBh914klwhgcPXnjuOPsqvls3Uy8ShDA",
+					"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjE0Mjk2YWUxLWU3NWEtNGI4ZC04ZDYwLTY0OWM5MDU1MTYwMyIsInN1YiI6IkFkbWluIiwicm9sZSI6IkFkbWluIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNTExMjgyMzExLCJuYmYiOjE1MTExOTU5MTF9.F7HRAJS8gHO8AIj5t9-3FQiIXG9lY1n-lIRFSVg3b3k",
 					"description": "",
 					"enabled": true
 				}
@@ -614,7 +613,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511157550941,
+			"time": 1511195937291,
 			"name": "Get ResponsesForUser",
 			"description": "",
 			"collectionId": "db807332-c9ac-fd97-b118-5f2711c4315a",
