@@ -36,4 +36,14 @@ html, body {
     height: 150px;
     clear: both;
     padding-top: 20px;
-} 
+}
+
+.navbar-style {
+    background-color: #312A25;
+    border-color: #FFFFFF;
+    color: #999999 !important;
+}
+
+.navbar-style a {
+    color: #999999 !important;
+}

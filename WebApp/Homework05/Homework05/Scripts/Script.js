@@ -28,6 +28,7 @@ $(document).ready(function () {
             window.location.href = yourApp.Urls.homeScreenUrl;
             sessionStorage.removeItem(tokenKey);
             $("#sidebar-wrapper").css('display', 'none');
+            $("#lblGreetings").css('display', 'none');
 
         }).fail(showError);
     })
