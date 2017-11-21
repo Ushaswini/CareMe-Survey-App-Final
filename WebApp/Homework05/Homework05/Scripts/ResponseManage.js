@@ -10,7 +10,7 @@
     self.surveysDataTable = $("#responsesTable").DataTable(
         {
             data: self.responses,
-            columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "SurveyComments" }, { data: "SurveyResponseReceivedTime" }]
+            columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
         });
     LoadSurveys();
 
@@ -44,7 +44,7 @@
         self.surveysDataTable = $("#responsesTable").DataTable(
             {
                 data: self.responses,
-                columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "SurveyComments" }, { data: "SurveyResponseReceivedTime" }]
+                columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" },{ data: "ResponseReceivedTime" }, { data: "ResponseText" }]
             });
     }
     function ViewModel() {
