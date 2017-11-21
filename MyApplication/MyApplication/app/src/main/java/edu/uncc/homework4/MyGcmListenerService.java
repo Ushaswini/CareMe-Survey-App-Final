@@ -42,4 +42,6 @@ public class MyGcmListenerService extends GcmListenerService {
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(MESSAGE_NOTIFICATION_ID, mBuilder.build());
     }
+
+
 }

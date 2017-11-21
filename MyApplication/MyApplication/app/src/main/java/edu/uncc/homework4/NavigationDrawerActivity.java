@@ -114,6 +114,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         if (id == R.id.nav_messenger) {
 
             MessagesFragment fragment = new MessagesFragment();
+            fragment.getMyActivity(NavigationDrawerActivity.this);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_frame,fragment)
                     .commit();
