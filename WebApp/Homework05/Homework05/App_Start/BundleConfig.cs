@@ -12,7 +12,8 @@ namespace Homework05
             
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/Script.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
@@ -25,13 +26,19 @@ namespace Homework05
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/sidenav.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                      "~/Scripts/knockout-{version}.js",
                      "~/Scripts/app.js"));
             bundles.Add(new ScriptBundle("~/bundles/Dashboard").Include(
                      "~/Scripts/knockout-{version}.js",
                       "~/Scripts/Dashboard.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/PublishSurveys").Include(
+                     "~/Scripts/knockout-{version}.js",
+                      "~/Scripts/PublishSurveys.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/datatable").Include(
                       "~/Scripts/DataTables/datatables.min.css",

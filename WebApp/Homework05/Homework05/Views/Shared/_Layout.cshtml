@@ -31,13 +31,49 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Group5</p>
-        </footer>
+
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav" style="margin-left:0;">
+                <li class="sidebar-brand">
+
+                    <a href="#menu-toggle" id="menu-toggle" style="margin-top:20px;float:right;"> <i class="glyphicon glyphicon-align-justify" style="font-size:20px !Important;" aria-hidden="true" aria-hidden="true"></i></a>
+
+                </li>
+                <li>
+                    <a href="/Admin/Dashboard"><i class="glyphicon glyphicon-dashboard" aria-hidden="true"> </i> <span style="margin-left:10px;">Dashboard</span>  </a>
+                </li>
+                <li>
+                    <a href="/Admin/ManageResource"> <i class="glyphicon glyphicon-book" aria-hidden="true"> </i> <span style="margin-left:10px;">Manage Resource</span> </a>
+                </li>
+                <li>
+                    <a href="/Admin/PublishSurveys"> <i class="glyphicon glyphicon-bullhorn" aria-hidden="true"> </i> <span style="margin-left:10px;">Publish Surveys</span> </a>
+                </li>
+                <li>
+                    <a href="/Admin/AnalyseResponses"> <i class="glyphicon glyphicon-stats" aria-hidden="true"> </i> <span style="margin-left:10px;">Analyse Responses</span> </a>
+                </li>
+
+                <br />
+                <br />
+                <br />
+                <hr />
+
+                <li>
+                    <a href="#" id="logout"> <i class="glyphicon glyphicon-log-out" aria-hidden="true"> </i> <span style="margin-left:10px;">Logout</span> </a>
+                </li>
+            </ul>
+        </div>
+        <div id="page-content-wrapper" class="container clear-top body-content">
+            @RenderBody()
+        </div>
     </div>
+  
+    <footer>
+
+        <hr />
+        <p>&copy; @DateTime.Now.Year - Group5</p>
+    </footer>
     <script type="text/javascript">
 
         var yourApp = yourApp || {};

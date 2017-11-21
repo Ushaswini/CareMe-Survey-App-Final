@@ -1,0 +1,48 @@
+﻿
+@section Scripts {
+    @Scripts.Render("~/bundles/PublishSurveys")
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label data-bind="value: result" />
+        </div>
+        <div class="form-group error-messages" data-bind="foreach: errors">
+            <p data-bind="text: $data" />
+        </div>
+    </div>
+
+
+    <div class="col-sm-12" style="float:left">
+        <h3>Publish Question to Study Group</h3>
+        <div class="col" style="float:left; margin:10px">
+            <select class="form-control" data-bind="options: studyGroups,
+                                                                        optionsCaption: 'Choose study group',
+                                                                        optionsText: 'StudyName',
+                                                                        optionsValue: 'StudyGroupId',
+                                                                        value: selectedStudyGroupForSurvey"></select>
+        </div>
+        <div class="col" style="float:left; margin:10px">
+            <form>
+                <input type="text" name="txtQuestion" class="form-control" placeholder="Question">
+            </form>
+        </div>
+        <div class="col" style="float:left; margin:10px">
+            <form>
+                <input type="radio" name="frequency" value="0"> Daily
+                <input type="radio" name="frequency" value="1"> Hourly
+                <input type="radio" name="frequency" value="2"> Twice a Day
+            </form>
+        </div>
+        <div class="col" style="float:left; margin:10px;">
+            <form>
+                <input type="time" title="time slot" name="time1" value="12" style=" visibility:hidden">
+                <input type="time" title="second time slot" name="time2" value="12" style=" visibility:hidden">
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-12" style="float:left">
+        <button style="float:left; margin:10px;height:34px" id="btnPublishQuestion">Publish</button>
+    </div>
+</div>
