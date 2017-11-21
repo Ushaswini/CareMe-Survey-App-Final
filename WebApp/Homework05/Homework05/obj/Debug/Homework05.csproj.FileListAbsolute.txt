@@ -366,7 +366,6 @@ C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\bin\Microsoft.AI
 C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\bin\Microsoft.AI.Web.xml
 C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\bin\es\Hangfire.Core.resources.dll
 C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\bin\zh\Hangfire.Core.resources.dll
-C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\obj\Debug\Homework05.csprojResolveAssemblyReference.cache
 C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\obj\Debug\Homework05.Migrations.InitialModels.resources
 C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\obj\Debug\Homework05.Migrations.DeviceId.resources
 C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\obj\Debug\Homework05.Migrations.Question.resources

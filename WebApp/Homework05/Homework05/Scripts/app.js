@@ -58,8 +58,8 @@
                 // Cache the access token in session storage.
                 sessionStorage.setItem(tokenKey, data.access_token);
                 window.location.href = 'Admin/Dashboard';
-                $("#sidebar-wrapper").css('display', 'block');
-                $("#lblGreetings").css('display', 'block');
+               // $("#sidebar-wrapper").css('display', 'block');
+                //$("#lblGreetings").css('display', 'block');
                 }).fail(showError);
             }).fail(showError);
 
