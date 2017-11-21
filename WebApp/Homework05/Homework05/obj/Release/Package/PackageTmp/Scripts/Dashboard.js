@@ -220,6 +220,8 @@
                 data: JSON.stringify(data)
             }).done(function (data) {
                 self.result("Done!");
+
+                $('#myModal').modal('toggle');
                 //Load users
                 LoadUsers();
             }).fail(showError);
@@ -253,25 +255,7 @@
             }).fail(showError);
     })
 
-    $("#logout").click(function () {
-        var token = sessionStorage.getItem(tokenKey);
-        var headers = {};
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: '/api/Account/Logout',
-            headers: headers
-        }).done(function (data) {
-            // Successfully logged out. Delete the token.
-           // self.user('');
-            window.location.href = yourApp.Urls.homeScreenUrl;
-            sessionStorage.removeItem(tokenKey);
-            
-        }).fail(showError);
-    })
+    
     $('#navigateToSurveyManager').click(function () {
         // Response.Redirect("~/Views/Survey/Manage.cshtml");
 
