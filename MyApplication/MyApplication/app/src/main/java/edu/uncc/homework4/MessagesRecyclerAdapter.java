@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -78,6 +80,8 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                     @Override
                     public void onClick(View v) {
                       //  if (listener != null) {
+                        String responseText = "";
+                        if(btnYes.isChecked()){responseText = "Yes";}else{responseText = "No";}
                             final int position = getAdapterPosition();
                             if (position != RecyclerView.NO_POSITION) {
                                 //listener.onItemClick(itemView, position);
@@ -86,16 +90,32 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
 
                                         .build();*/
 
-                                Request request = new Request.Builder()
-                                        .url("http://caremesurvey.azurewebsites.net/api/Surveys?studyGroupId=1")//+user.getSurveyGroupId())
-                                        .header("Authorization", "Bearer "+access_token)//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
+                                RequestBody formBody = new FormBody.Builder()
+                                        .add("UserId", messages.get(getAdapterPosition()).getUserId())
+                                        .add("StudyGroupId", messages.get(getAdapterPosition()).getStudyGrpId())
+                                        .add("SurveyId", messages.get(getAdapterPosition()).getSurveyId())
+                                        .add("UserResponseText",responseText )
+                                        .add("SurveyResponseReceivedTime", (new Date()).toString())
                                         .build();
+
+                                Request request = new Request.Builder()
+                                        .url("http://careme-surveypart2.azurewebsites.net/api/SurveyResponses")
+                                        .header("Content-Type","application/x-www-form-urlencoded")
+                                        .header("Authorization", "Bearer "+access_token)
+                                        .post(formBody)
+                                        .post(formBody)
+                                        .build();
+
+                                /*Request request = new Request.Builder()
+                                        .url("http://careme-surveypart2.azurewebsites.net/api/SurveyResponses")//+user.getSurveyGroupId())
+                                        .header("Authorization", "Bearer "+access_token)//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
+                                        .build();*/
 
                                 OkHttpClient client = new OkHttpClient();
                                 client.newCall(request).enqueue(new Callback() {
                                     @Override
                                     public void onFailure(Call call, IOException e) {
-
+                                        Log.d("demo","response failure");
                                        // Toast.makeText(getContext(),"Error in sending response",Toast.LENGTH_SHORT);
                                     }
 
@@ -103,6 +123,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                                     public void onResponse(Call call, Response response) throws IOException {
                                        // Toast.makeText(getContext(),"Response sent successfully !!",Toast.LENGTH_SHORT);
                                         listener.onItemClick(itemView,position);
+                                        Log.d("demo","response success");
                                         //itemView.setEnabled(false);
                                         if(rgResponse.getCheckedRadioButtonId() == R.id.radioButtonYes){
                                             //btnYes.setBackgroundColor(Color.GREEN);
@@ -157,10 +178,14 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         holder.message.setText(message);
         if (messages.get(position).getQuestion().equals("")){
 
-        }else if(messages.get(position).getQuestion().equals("No")){
+        }else if(messages.get(position).getResponse().equals("No")){
+            holder.rgResponse.setEnabled(false);
+            holder.btnNo.setChecked(true);
             holder.btnNo.setBackgroundColor(Color.GREEN);
             holder.sendResponse.setEnabled(false);
-        }else if(messages.get(position).getQuestion().equals("Yes")){
+        }else if(messages.get(position).getResponse().equals("Yes")){
+            holder.rgResponse.setEnabled(false);
+            holder.btnYes.setChecked(true);
             holder.btnYes.setBackgroundColor(Color.GREEN);
             holder.sendResponse.setEnabled(false);
         }
