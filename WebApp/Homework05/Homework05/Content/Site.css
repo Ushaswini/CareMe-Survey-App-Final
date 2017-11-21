@@ -47,3 +47,9 @@ html, body {
 .navbar-style a {
     color: #999999 !important;
 }
+
+.btn-style {
+    background-color: #312A25;
+    border-color: #FFFFFF;
+    color: #999999 !important;
+}

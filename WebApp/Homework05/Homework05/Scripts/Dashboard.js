@@ -220,6 +220,8 @@
                 data: JSON.stringify(data)
             }).done(function (data) {
                 self.result("Done!");
+
+                $('#myModal').modal('toggle');
                 //Load users
                 LoadUsers();
             }).fail(showError);
