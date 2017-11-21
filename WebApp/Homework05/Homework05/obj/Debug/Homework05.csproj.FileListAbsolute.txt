@@ -248,3 +248,4 @@ E:\MS\MS-Course-Work\Fall 17\Adv Mad\Projects\Homework05-CareMe-Part2\WebApp\Hom
 E:\MS\MS-Course-Work\Fall 17\Adv Mad\Projects\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.csproj.GenerateResource.Cache
 E:\MS\MS-Course-Work\Fall 17\Adv Mad\Projects\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.dll
 E:\MS\MS-Course-Work\Fall 17\Adv Mad\Projects\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.pdb
+E:\MS\MS-Course-Work\Fall 17\Adv Mad\Projects\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.csprojResolveAssemblyReference.cache

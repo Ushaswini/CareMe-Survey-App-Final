@@ -12,11 +12,11 @@ namespace Homework_04.Controllers
         public ActionResult Dashboard()
         {
 
-            //if (User.IsInRole("Admin"))
-            //{
-                
-            //}
-            //Console.WriteLine(AuthenticationManager);
+            if (User.IsInRole("Admin"))
+            {
+
+            }
+            Console.WriteLine(AuthenticationManager);
             ViewBag.Title = "Dashboard";
             return View("~/Views/Admin/Dashboard.cshtml");
             //return RedirectToAction("Index", "Home");

@@ -27,6 +27,7 @@ $(document).ready(function () {
             // self.user('');
             window.location.href = yourApp.Urls.homeScreenUrl;
             sessionStorage.removeItem(tokenKey);
+            $("#sidebar-wrapper").css('display', 'none');
 
         }).fail(showError);
     })
