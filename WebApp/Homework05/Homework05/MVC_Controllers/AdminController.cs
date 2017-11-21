@@ -11,57 +11,32 @@ namespace Homework_04.Controllers
 
         public ActionResult Dashboard()
         {
-
-            if (User.IsInRole("Admin"))
-            {
-
-            }
-            Console.WriteLine(AuthenticationManager);
             ViewBag.Title = "Dashboard";
             return View("~/Views/Admin/Dashboard.cshtml");
-            //return RedirectToAction("Index", "Home");
 
         }
 
         public ActionResult ManageResource()
         {
 
-            //if (User.IsInRole("Admin"))
-            //{
-
-            //}
-            //Console.WriteLine(AuthenticationManager);
-            ViewBag.Title = "Dashboard";
-            return View("~/Views/Admin/ManageResource.cshtml");
-            //return RedirectToAction("Index", "Home");
+           // ViewBag.Title = "ManageResource";
+           // return View("~/Views/Admin/ManageResource.cshtml");
+            return RedirectToAction("Dashboard", "Admin");
 
         }
 
         public ActionResult PublishSurveys()
         {
 
-            //if (User.IsInRole("Admin"))
-            //{
-
-            //}
-            //Console.WriteLine(AuthenticationManager);
-            ViewBag.Title = "Dashboard";
+            ViewBag.Title = "PublishSurveys";
             return View("~/Views/Admin/PublishSurveys.cshtml");
-            //return RedirectToAction("Index", "Home");
 
         }
 
         public ActionResult AnalyseResponses()
         {
-
-            //if (User.IsInRole("Admin"))
-            //{
-
-            //}
-            //Console.WriteLine(AuthenticationManager);
-            ViewBag.Title = "Dashboard";
+            ViewBag.Title = "AnalyseResponses";
             return View("~/Views/Admin/AnalyseResponses.cshtml");
-            //return RedirectToAction("Index", "Home");
 
         }
     }
