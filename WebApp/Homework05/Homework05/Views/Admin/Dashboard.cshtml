@@ -14,7 +14,6 @@
     </div>
 
     <div class="col-sm-12">
-        <button type="submit" id="logout" class="btn btn-default pull-right">Logout</button>
         <h3 >Enroll User</h3>
         
         <div class="col" style="float:right; margin:10px">
@@ -46,42 +45,6 @@
     </div>
 
     <div class="col-sm-12" style="float:left">
-        <h3>Publish Question to Study Group</h3>
-        <div class="col" style="float:left; margin:10px">
-            <select class="form-control" data-bind="options: studyGroups,
-                                                                        optionsCaption: 'Choose study group',
-                                                                        optionsText: 'StudyName',
-                                                                        optionsValue: 'StudyGroupId',
-                                                                        value: selectedStudyGroupForSurvey"></select>
-        </div>
-        <div class="col" style="float:left; margin:10px">
-            <form>
-                <input type="text" name="txtQuestion" class="form-control" placeholder="Question">
-            </form>
-        </div>
-        <div class="col" style="float:left; margin:10px">
-            <form>
-                <input type="radio" name="frequency" value="0"> Daily
-                <input type="radio" name="frequency" value="1"> Hourly
-                <input type="radio" name="frequency" value="2"> Twice a Day
-            </form>
-        </div>
-        <div class="col" style="float:left; margin:10px;">
-            <form>
-                <input type="time" title="time slot" name="time1" value="12" style=" visibility:hidden">
-                <input type="time" title="second time slot" name="time2" value="12" style=" visibility:hidden">
-            </form>
-        </div>
-    </div>
-    <div class="col-sm-12" style="float:left">
-        <button style="float:left; margin:10px;height:34px" id="btnPublishQuestion">Publish</button>
-    </div>
-    <div class="col-sm-12" style="float:left">
-        <h3>List surveys</h3>
-        <div class="col-sm-12" style="float:left">
-            <button style="float:left;margin-top:10px;height:34px;margin-bottom:10px" id="navigateToSurveyManager">Go to Survey Manager</button>
-        </div>
-        
         <h3 style="margin-bottom:10px;margin:10px">List of users enrolled</h3>
         <div class="col-sm-12" style="float:left;margin:10px">
             

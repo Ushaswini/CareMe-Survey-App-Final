@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     //to prevent back
-   // window.onload  = window.history.forward();
+    // window.onload  = window.history.forward();
     var app = new ViewModel();
     ko.applyBindings(app);
 
@@ -9,40 +9,8 @@
 
     console.log("document loaded");
 
-    self.usersDataTable = $("#usersTable").DataTable(
-        {
-            select: true,
-            data: self.users,
-            columns: [{ data: "UserName" }]
-    });
 
     LoadStudyGroups();
-
-    LoadUsers();
-
-    function LoadUsers() {
-        var headers = {};
-        var token = sessionStorage.getItem(tokenKey);
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
-        }
-        console.log(token);
-        $.ajax({
-            type: 'GET',
-            url: '/api/Users',
-            headers: headers,
-            contentType: 'application/json; charset=utf-8'
-        }).done(function (data) {
-            console.log(data);
-            self.users = data;
-            /*for (var i = 0; i < data.length; i++) {
-                self.users.push(data[i]);
-                console.log("users in table are" + data[i]);
-            }*/
-            
-            BindUsersToDatatable(data);
-        }).fail(showError);
-    }
 
     function LoadStudyGroups() {
         var headers = {};
@@ -63,25 +31,6 @@
             }
         }).fail(showError);
     }
-   
-    function BindUsersToDatatable(data) {
-        console.log(self.users);
-        self.usersDataTable.clear();
-        self.usersDataTable.destroy();
-        self.usersDataTable = $("#usersTable").DataTable(
-            {
-                select:true,
-                data: self.users,
-                columns: [{ data: "UserName" }]
-            });
-        $('#usersTable tbody').on('click', 'tr', function () {
-            var data = self.usersDataTable.row(this).data();
-            //alert('You clicked on ' + data + '\'s row');
-            console.log(data.Id);
-            sessionStorage.setItem('user', data.Id);
-            window.location.href = yourApp.Urls.userMessagesUrl;
-        });
-    }
 
     $('input[name=frequency]').change(function () {
         var value = $('input[name=frequency]:checked').val();
@@ -99,7 +48,7 @@
         }
     });
 
-     $("#btnPublishQuestion").click(function () {
+    $("#btnPublishQuestion").click(function () {
         var frequencyOfNotifications = $('input[name=frequency]:checked').val();
 
         var questionText = $('input[name=txtQuestion]').val();
@@ -181,7 +130,7 @@
     }
 
     function ViewModel() {
-        
+
         self.userName = ko.observable();
         self.userPassword = ko.observable();
         self.studyGroups = ko.observableArray([]);
@@ -193,7 +142,7 @@
         self.result = ko.observable();
         self.errors = ko.observableArray([]);
 
-       
+
 
         self.AddUser = function () {
 
@@ -225,7 +174,7 @@
             }).fail(showError);
         }
 
-      
+
     }
 
     $("#presentSurvey").click(function () {
@@ -250,15 +199,15 @@
         }).done(function (data) {
             console.log("data is received");
 
-            }).fail(showError);
+        }).fail(showError);
     })
 
-    
+
     $('#navigateToSurveyManager').click(function () {
         // Response.Redirect("~/Views/Survey/Manage.cshtml");
 
         window.location.href = yourApp.Urls.surveyManageUrl;
-            //replace("~/Views/Survey/Manage");
+        //replace("~/Views/Survey/Manage");
 
     })
 
@@ -289,7 +238,7 @@
         }
     }
 
-    
+
 
 })
 

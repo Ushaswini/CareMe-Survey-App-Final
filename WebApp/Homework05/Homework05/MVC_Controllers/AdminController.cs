@@ -22,5 +22,47 @@ namespace Homework_04.Controllers
             //return RedirectToAction("Index", "Home");
 
         }
+
+        public ActionResult ManageResource()
+        {
+
+            //if (User.IsInRole("Admin"))
+            //{
+
+            //}
+            //Console.WriteLine(AuthenticationManager);
+            ViewBag.Title = "Dashboard";
+            return View("~/Views/Admin/ManageResource.cshtml");
+            //return RedirectToAction("Index", "Home");
+
+        }
+
+        public ActionResult PublishSurveys()
+        {
+
+            //if (User.IsInRole("Admin"))
+            //{
+
+            //}
+            //Console.WriteLine(AuthenticationManager);
+            ViewBag.Title = "Dashboard";
+            return View("~/Views/Admin/PublishSurveys.cshtml");
+            //return RedirectToAction("Index", "Home");
+
+        }
+
+        public ActionResult AnalyseResponses()
+        {
+
+            //if (User.IsInRole("Admin"))
+            //{
+
+            //}
+            //Console.WriteLine(AuthenticationManager);
+            ViewBag.Title = "Dashboard";
+            return View("~/Views/Admin/AnalyseResponses.cshtml");
+            //return RedirectToAction("Index", "Home");
+
+        }
     }
 }
