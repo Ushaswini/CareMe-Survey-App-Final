@@ -36,7 +36,7 @@ namespace Homework_04.Controllers
         public ActionResult AnalyseResponses()
         {
             ViewBag.Title = "AnalyseResponses";
-            return View("~/Views/Admin/AnalyseResponses.cshtml");
+            return RedirectToAction("Manage", "Survey");
 
         }
     }
