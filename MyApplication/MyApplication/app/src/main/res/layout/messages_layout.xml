@@ -59,6 +59,16 @@
         android:layout_height="wrap_content"
         android:text="Send Response"
         />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp">
+            <ImageView
+                android:id="@+id/imgResponseTick"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/greentick"/>
         <TextView
             android:id="@+id/messageTime"
             android:layout_width="match_parent"
@@ -68,6 +78,7 @@
             android:fontFamily="sans-serif"
             android:layout_marginRight="5dp"
             />
+        </LinearLayout>
 
         </LinearLayout>
 </LinearLayout>

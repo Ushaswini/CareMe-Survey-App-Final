@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,7 +62,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         public RadioGroup rgResponse;
         public EditText textResponse;
         public TextView textTime;
-
+        public ImageView tick;
 
 
         Context vContext;
@@ -75,6 +77,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             rgResponse = (RadioGroup) itemView.findViewById(R.id.rgChoice);
             textResponse = (EditText)itemView.findViewById(R.id.editTextAns);
             textTime = (TextView)itemView.findViewById(R.id.messageTime);
+            tick = (ImageView)itemView.findViewById(R.id.imgResponseTick);
 
             vContext = context;
             //SharedPreferences sharedPref =   PreferenceManager.getDefaultSharedPreferences(mContext);// mContext.getSharedPreferences("token",Context.MODE_PRIVATE);   //getPreferences(Context.MODE_PRIVATE);
@@ -110,6 +113,14 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                                 //editor.putInt(getString(R.string.saved_high_score), newHighScore);
                                 //editor.commit();
                                 String access_token = sharedPref.getString("token","");
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z");
+                                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GST-0500"));
+                                Date currDate = null;
+                                try {
+                                    currDate = simpleDateFormat.parse((new Date()).toString());
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                                 RequestBody formBody = new FormBody.Builder()
                                         .add("UserId", messages.get(getAdapterPosition()).getUserId())
                                         .add("StudyGroupId", messages.get(getAdapterPosition()).getStudyGrpId())
@@ -195,7 +206,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         //MusicTrack track = tracks.get(position);
         SurveyQuestion surveyQuestion = messages.get(position);
         holder.message.setText(surveyQuestion.getQuestion());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         try {
             Date messageDate = simpleDateFormat.parse(messages.get(position).getSurveyTime());
             PrettyTime p = new PrettyTime();
@@ -213,6 +224,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             holder.btnYes.setVisibility(View.VISIBLE);
             holder.btnNo.setVisibility(View.VISIBLE);
             holder.sendResponse.setVisibility(View.VISIBLE);
+            holder.tick.setVisibility(View.INVISIBLE);
             holder.textResponse.setVisibility(View.GONE);
 
             if (surveyQuestion.getResponse().equals("")) {
@@ -220,6 +232,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                 holder.btnYes.setChecked(false);
                 holder.btnNo.setChecked(false);
                 holder.sendResponse.setEnabled(true);
+                holder.tick.setVisibility(View.INVISIBLE);
 
             } else if (messages.get(position).getResponse().equals("No")) {
                 // holder.rgResponse.setEnabled(false);
@@ -227,12 +240,14 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                 holder.btnNo.setChecked(true);
                 holder.btnYes.setChecked(false);
                 holder.sendResponse.setEnabled(false);
+                holder.tick.setVisibility(View.VISIBLE);
             } else if (messages.get(position).getResponse().equals("Yes")) {
                 // holder.rgResponse.setEnabled(false);
                 holder.rgResponse.setEnabled(false);
                 holder.btnYes.setChecked(true);
                 holder.btnNo.setChecked(false);
                 holder.sendResponse.setEnabled(false);
+                holder.tick.setVisibility(View.VISIBLE);
             }
         }
         else if(surveyQuestion.getQuesType() == 2){
@@ -242,6 +257,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             holder.sendResponse.setVisibility(View.GONE);
             holder.textResponse.setVisibility(View.GONE);
             holder.sendResponse.setEnabled(false);
+            holder.tick.setVisibility(View.INVISIBLE);
         }else if(surveyQuestion.getQuesType() == 0){
             if (surveyQuestion.getResponse().equals("")) {
                 holder.rgResponse.setVisibility(View.GONE);
@@ -252,6 +268,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                 holder.textResponse.setText("");
                 holder.textResponse.setEnabled(true);
                 holder.sendResponse.setEnabled(true);
+                holder.tick.setVisibility(View.INVISIBLE);
             }else{
                 holder.rgResponse.setVisibility(View.GONE);
                 holder.btnYes.setVisibility(View.GONE);
@@ -261,6 +278,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                 holder.textResponse.setEnabled(false);
                 holder.textResponse.setText(surveyQuestion.getResponse());
                 holder.sendResponse.setEnabled(false);
+                holder.tick.setVisibility(View.VISIBLE);
             }
         }
 

@@ -1,11 +1,13 @@
 package edu.uncc.homework4;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 //import com.pushbots.push.Pushbots;
 
@@ -45,8 +48,38 @@ public class NavigationDrawerActivity extends AppCompatActivity
         //mDrawerList = (ListView) findViewById(R.id.navList);
         //addDrawerItems();
         //Pushbots.sharedInstance().registerForRemoteNotifications();
-        Intent intent = new Intent(this, RegistrationIntentService.class);
-        startService(intent);
+
+        final SharedPreferences sharedPreferences = this.getSharedPreferences("isRegistered", Context.MODE_PRIVATE);
+        String wantsNotification = sharedPreferences.getString("isRegistered","");
+        if (wantsNotification.equals("")) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage("Allow Care me to send notifications");
+            builder1.setCancelable(false);
+
+            builder1.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            final SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("isRegistered", "Yes");
+                            editor.commit();
+                            Intent intent = new Intent(NavigationDrawerActivity.this, RegistrationIntentService.class);
+                            startService(intent);
+                        }
+                    });
+
+            builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(NavigationDrawerActivity.this, "Notifications disabled", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+
         MessagesFragment fragment = new MessagesFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame,fragment)

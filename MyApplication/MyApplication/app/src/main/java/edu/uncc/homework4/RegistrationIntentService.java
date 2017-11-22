@@ -32,6 +32,7 @@ import okhttp3.Response;
 
 public class RegistrationIntentService extends IntentService {
     SharedPreferences pref;
+    SharedPreferences sharedPreferences;
     String access_token;
     public RegistrationIntentService(){
         super("");
@@ -50,12 +51,17 @@ public class RegistrationIntentService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         pref = getApplicationContext().getSharedPreferences("token", Context.MODE_PRIVATE);
         access_token = pref.getString("token","");
+        sharedPreferences = getApplicationContext().getSharedPreferences("isRegistered", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+
         InstanceID instanceID = InstanceID.getInstance(this);
         String token = null;
         //int id = R.string.;
         try {
             token = instanceID.getToken(getApplicationContext().getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            editor.putString("isRegistered","Yes");
+            editor.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }

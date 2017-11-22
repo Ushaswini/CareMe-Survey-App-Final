@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,33 +95,42 @@ public class ProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ToggleButton toggleButton = (ToggleButton) getActivity().findViewById(R.id.toggle);
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences pref = getActivity().getSharedPreferences("isRegistered",Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = pref.edit();
         //editor.putBoolean("isRegistered",false);
-        Boolean isReg = pref.getBoolean("isRegitered",false);
+        String isReg = pref.getString("isRegistered","");
         final InstanceID instanceID = InstanceID.getInstance(getContext());
         //toggleButton.setChecked();
-        toggleButton.setChecked(isReg);
+        toggleButton.setChecked(isReg.equals("Yes"));
+        Log.d("demo","isreg "+ isReg);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                try {
+
                     if(!isChecked) {
-                        instanceID.deleteInstanceID();
-                        editor.putBoolean("isRegistered",false);
-                        editor.commit();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    instanceID.deleteInstanceID();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                editor.putString("isRegistered","No");
+                                editor.commit();
+                            }
+                        }).start();
+
                     }
                     else{
                         Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
                         getActivity().startService(intent);
-                        editor.putBoolean("isRegistered",true);
-                        editor.commit();
+
                     }
 
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
 
             }
         });
