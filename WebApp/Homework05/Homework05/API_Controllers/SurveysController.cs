@@ -174,19 +174,21 @@ namespace Homework05.API_Controllers
             try
             {
                 db.SaveChanges();
+                var question = db.Questions.Where(q => q.QuestionId.Equals(survey.QuestionId));
+                var surveyToSend = db.Surveys.Include(s => s.Question).Where(s => s.QuestionId.Equals(survey.QuestionId)).FirstOrDefault();
                 switch (survey.FrequencyOfNotifications)
                 {
                     case Frequency.Daily:
                         {
                             String[] times = survey.Time1.Split(':');
                             String cornExpression = times[1] + " " + times[0] + " * * *";
-                            RecurringJob.AddOrUpdate(survey.SurveyId, () => SendNotification(survey), cornExpression, TimeZoneInfo.Local);
+                            RecurringJob.AddOrUpdate(survey.SurveyId, () => SendNotification(surveyToSend), cornExpression, TimeZoneInfo.Local);
                             break;
                         }
                     case Frequency.Hourly:
                         //PushNotificationsAsync();
                         SendNotification(survey);
-                        RecurringJob.AddOrUpdate(survey.SurveyId, () => SendNotification(survey), Cron.Hourly, TimeZoneInfo.Local);
+                        RecurringJob.AddOrUpdate(survey.SurveyId, () => SendNotification(surveyToSend), Cron.Hourly, TimeZoneInfo.Local);
                         break;
                     case Frequency.TwiceDaily:
                         {
@@ -194,8 +196,8 @@ namespace Homework05.API_Controllers
                             String cornExpression = times[1] + " " + times[0] + " * * *";
                             String[] times2 = survey.Time2.Split(':');
                             String cornExpression2 = times2[1] + " " + times2[0] + " * * *";
-                            RecurringJob.AddOrUpdate(survey.SurveyId + "First", () => SendNotification(survey), cornExpression, TimeZoneInfo.Local);
-                            RecurringJob.AddOrUpdate(survey.SurveyId + "Second", () => SendNotification(survey), cornExpression2, TimeZoneInfo.Local);
+                            RecurringJob.AddOrUpdate(survey.SurveyId + "First", () => SendNotification(surveyToSend), cornExpression, TimeZoneInfo.Local);
+                            RecurringJob.AddOrUpdate(survey.SurveyId + "Second", () => SendNotification(surveyToSend), cornExpression2, TimeZoneInfo.Local);
                             break;
                         }
                 }
@@ -219,60 +221,70 @@ namespace Homework05.API_Controllers
         }
 
         public void SendNotification(Survey survey)
-        {            
-            List<string> deviceIds = new List<string>();  
-            var usersInGroup = db.Users.Where(u => u.StudyGroupId.Equals(survey.StudyGroupId)).ToList();
-            foreach(var user in usersInGroup)
+        {
+            try
             {
-                if(user.DeviceId != null)
-                    deviceIds.Add(user.DeviceId);
-            }
-            //deviceIds.RemoveAt(0);
-            //deviceIds.Add("ebR53cvFzu8:APA91bHk0D_Bwth1jeD-pJ4Q3aztg8C8USt8qFf5_fOV4aflIMVqjoc0HsAYQARcUfik3NfkuQG21jh265tJzBi7efPXw77__JEzaDSbPG8rAiZBTguobpNEjCPnCUPzM9zawIpgcO2o");
-            SurveyPushNotification notification = new SurveyPushNotification {
-                RegisteredDeviceIds = deviceIds,
-                Data = new PushNotificationData
+                List<string> deviceIds = new List<string>();
+                var usersInGroup = db.Users.Where(u => u.StudyGroupId.Equals(survey.StudyGroupId)).ToList();
+                foreach (var user in usersInGroup)
                 {
-                    Message = survey.Question.QuestionText,
-                    Time = DateTime.Now.ToString()
+                    if (user.DeviceId != null)
+                        deviceIds.Add(user.DeviceId);
                 }
+                //deviceIds.RemoveAt(0);
+                //deviceIds.Add("ebR53cvFzu8:APA91bHk0D_Bwth1jeD-pJ4Q3aztg8C8USt8qFf5_fOV4aflIMVqjoc0HsAYQARcUfik3NfkuQG21jh265tJzBi7efPXw77__JEzaDSbPG8rAiZBTguobpNEjCPnCUPzM9zawIpgcO2o");
+                SurveyPushNotification notification = new SurveyPushNotification
+                {
+                    RegisteredDeviceIds = deviceIds,
+                    Data = new PushNotificationData
+                    {
+                        Message = survey.Question.QuestionText,
+                        Time = DateTime.Now.ToString()
+                    }
 
-            };
-            if(deviceIds.Count > 0)
-            {
-                var applicationID = "AIzaSyC0Ian0Yr7JK9tZEi7-dZ3GcO-2dzomG1M";
-                // applicationID means google Api key 
-                var SENDER_ID = "283278634859";
-                // SENDER_ID is nothing but your ProjectID (from API Console- google code)  
+                };
+                if (deviceIds.Count > 0)
+                {
+                    var applicationID = "AIzaSyC0Ian0Yr7JK9tZEi7-dZ3GcO-2dzomG1M";
+                    // applicationID means google Api key 
+                    var SENDER_ID = "283278634859";
+                    // SENDER_ID is nothing but your ProjectID (from API Console- google code)  
 
-                string serializedNotification = JsonConvert.SerializeObject(notification);
+                    string serializedNotification = JsonConvert.SerializeObject(notification);
 
-                WebRequest tRequest;
+                    WebRequest tRequest;
 
-                tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
+                    tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send");
 
-                tRequest.Method = "post";
+                    tRequest.Method = "post";
 
-                tRequest.ContentType = " application/json";
+                    tRequest.ContentType = " application/json";
 
-                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
+                    tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
 
-                tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+                    tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
 
-                Byte[] byteArray = Encoding.UTF8.GetBytes(serializedNotification);
-                tRequest.ContentLength = byteArray.Length;
-                Stream dataStream = tRequest.GetRequestStream();
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                dataStream.Close();
-                WebResponse tResponse = tRequest.GetResponse();
-                dataStream = tResponse.GetResponseStream();
-                StreamReader tReader = new StreamReader(dataStream);
-                String sResponseFromServer = tReader.ReadToEnd();   //Get response from GCM server.
-                Console.WriteLine(sResponseFromServer);
-                tReader.Close();
-                dataStream.Close();
-                tResponse.Close();
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(serializedNotification);
+                    tRequest.ContentLength = byteArray.Length;
+                    Stream dataStream = tRequest.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+                    WebResponse tResponse = tRequest.GetResponse();
+                    dataStream = tResponse.GetResponseStream();
+                    StreamReader tReader = new StreamReader(dataStream);
+                    String sResponseFromServer = tReader.ReadToEnd();   //Get response from GCM server.
+                    Console.WriteLine(sResponseFromServer);
+                    tReader.Close();
+                    dataStream.Close();
+                    tResponse.Close();
+                }
             }
+            catch (Exception e)
+            {
+
+            }
+                     
+            
 
            
         }

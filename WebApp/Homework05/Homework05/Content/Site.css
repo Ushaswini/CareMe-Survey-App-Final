@@ -8,7 +8,7 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
+/*Edited*/
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
@@ -36,4 +36,20 @@ html, body {
     height: 150px;
     clear: both;
     padding-top: 20px;
-} 
+}
+
+.navbar-style {
+    background-color: #312A25;
+    border-color: #FFFFFF;
+    color: #999999 !important;
+}
+
+.navbar-style a {
+    color: #999999 !important;
+}
+
+.btn-style {
+    background-color: #312A25;
+    border-color: #FFFFFF;
+    color: #999999 !important;
+}
