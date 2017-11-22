@@ -1,8 +1,11 @@
 package edu.uncc.homework4;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +15,12 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
+
+import com.google.android.gms.gcm.GcmReceiver;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
+
+import java.io.IOException;
 
 //import com.pushbots.push.Pushbots;
 
@@ -85,13 +94,36 @@ public class ProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ToggleButton toggleButton = (ToggleButton) getActivity().findViewById(R.id.toggle);
-       /* toggleButton.setChecked(Pushbots.sharedInstance().isNotificationEnabled());
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final SharedPreferences.Editor editor = pref.edit();
+        //editor.putBoolean("isRegistered",false);
+        Boolean isReg = pref.getBoolean("isRegitered",false);
+        final InstanceID instanceID = InstanceID.getInstance(getContext());
+        //toggleButton.setChecked();
+        toggleButton.setChecked(isReg);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Pushbots.sharedInstance().toggleNotifications(isChecked);
+                try {
+                    if(!isChecked) {
+                        instanceID.deleteInstanceID();
+                        editor.putBoolean("isRegistered",false);
+                        editor.commit();
+                    }
+                    else{
+                        Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
+                        getActivity().startService(intent);
+                        editor.putBoolean("isRegistered",true);
+                        editor.commit();
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
-        });*/
+        });
     }
 
     @Override

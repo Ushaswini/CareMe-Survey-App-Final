@@ -13,7 +13,7 @@
         android:layout_below="@+id/textViewResult"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         android:background="@drawable/border"
          />
 

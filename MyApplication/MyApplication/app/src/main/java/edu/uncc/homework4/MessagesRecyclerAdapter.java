@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,7 +18,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +58,8 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         public RadioButton btnYes;
         public RadioButton btnNo;
         public RadioGroup rgResponse;
+        public EditText textResponse;
+        public TextView textTime;
 
 
 
@@ -66,14 +73,18 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             btnYes = (RadioButton) itemView.findViewById(R.id.radioButtonYes);
             btnNo = (RadioButton) itemView.findViewById(R.id.radioButtonNo);
             rgResponse = (RadioGroup) itemView.findViewById(R.id.rgChoice);
+            textResponse = (EditText)itemView.findViewById(R.id.editTextAns);
+            textTime = (TextView)itemView.findViewById(R.id.messageTime);
 
             vContext = context;
-            SharedPreferences sharedPref =   PreferenceManager.getDefaultSharedPreferences(mContext);// mContext.getSharedPreferences("token",Context.MODE_PRIVATE);   //getPreferences(Context.MODE_PRIVATE);
-            final String access_token = sharedPref.getString("token","");
+            //SharedPreferences sharedPref =   PreferenceManager.getDefaultSharedPreferences(mContext);// mContext.getSharedPreferences("token",Context.MODE_PRIVATE);   //getPreferences(Context.MODE_PRIVATE);
+            //final String access_token = sharedPref.getString("token","");
 
             SharedPreferences sharedPrefUser = PreferenceManager.getDefaultSharedPreferences(mContext);   //getPreferences(Context.MODE_PRIVATE);
             Gson gson = new Gson();
             final User user = gson.fromJson(sharedPrefUser.getString("user",""),User.class);
+
+
 
             if (sendResponse.isClickable()) {
                 sendResponse.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +92,11 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                     public void onClick(View v) {
                       //  if (listener != null) {
                         String responseText = "";
-                        if(btnYes.isChecked()){responseText = "Yes";}else{responseText = "No";}
+                        if(messages.get(getAdapterPosition()).getQuesType() == 0) {
+                            responseText = textResponse.getText().toString();
+                        }else{
+
+                        if(btnYes.isChecked()){responseText = "Yes";}else{responseText = "No";}}
                             final int position = getAdapterPosition();
                             if (position != RecyclerView.NO_POSITION) {
                                 //listener.onItemClick(itemView, position);
@@ -89,7 +104,12 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                                 /*RequestBody formBody = new FormBody.Builder()
 
                                         .build();*/
-
+                                SharedPreferences sharedPref = mContext.getSharedPreferences("token",Context.MODE_PRIVATE);   //getPreferences(Context.MODE_PRIVATE);
+                                //SharedPreferences.Editor editor = sharedPref.edit();
+                                //editor.  .putString("token",access_token);
+                                //editor.putInt(getString(R.string.saved_high_score), newHighScore);
+                                //editor.commit();
+                                String access_token = sharedPref.getString("token","");
                                 RequestBody formBody = new FormBody.Builder()
                                         .add("UserId", messages.get(getAdapterPosition()).getUserId())
                                         .add("StudyGroupId", messages.get(getAdapterPosition()).getStudyGrpId())
@@ -102,7 +122,6 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                                         .url("http://careme-surveypart2.azurewebsites.net/api/SurveyResponses")
                                         .header("Content-Type","application/x-www-form-urlencoded")
                                         .header("Authorization", "Bearer "+access_token)
-                                        .post(formBody)
                                         .post(formBody)
                                         .build();
 
@@ -174,20 +193,75 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
     @Override
     public void onBindViewHolder(MessagesRecyclerAdapter.ViewHolder holder, int position) {
         //MusicTrack track = tracks.get(position);
-        String message = messages.get(position).getQuestion();
-        holder.message.setText(message);
-        if (messages.get(position).getQuestion().equals("")){
+        SurveyQuestion surveyQuestion = messages.get(position);
+        holder.message.setText(surveyQuestion.getQuestion());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z");
+        try {
+            Date messageDate = simpleDateFormat.parse(messages.get(position).getSurveyTime());
+            PrettyTime p = new PrettyTime();
+            holder.textTime.setText(p.format(messageDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        }else if(messages.get(position).getResponse().equals("No")){
-            holder.rgResponse.setEnabled(false);
-            holder.btnNo.setChecked(true);
-            holder.btnNo.setBackgroundColor(Color.GREEN);
+
+
+
+        if (surveyQuestion.getQuesType() == 1) {
+
+            holder.rgResponse.setVisibility(View.VISIBLE);
+            holder.btnYes.setVisibility(View.VISIBLE);
+            holder.btnNo.setVisibility(View.VISIBLE);
+            holder.sendResponse.setVisibility(View.VISIBLE);
+            holder.textResponse.setVisibility(View.GONE);
+
+            if (surveyQuestion.getResponse().equals("")) {
+                holder.rgResponse.setEnabled(true);
+                holder.btnYes.setChecked(false);
+                holder.btnNo.setChecked(false);
+                holder.sendResponse.setEnabled(true);
+
+            } else if (messages.get(position).getResponse().equals("No")) {
+                // holder.rgResponse.setEnabled(false);
+                holder.rgResponse.setEnabled(false);
+                holder.btnNo.setChecked(true);
+                holder.btnYes.setChecked(false);
+                holder.sendResponse.setEnabled(false);
+            } else if (messages.get(position).getResponse().equals("Yes")) {
+                // holder.rgResponse.setEnabled(false);
+                holder.rgResponse.setEnabled(false);
+                holder.btnYes.setChecked(true);
+                holder.btnNo.setChecked(false);
+                holder.sendResponse.setEnabled(false);
+            }
+        }
+        else if(surveyQuestion.getQuesType() == 2){
+            holder.rgResponse.setVisibility(View.GONE);
+            holder.btnYes.setVisibility(View.GONE);
+            holder.btnNo.setVisibility(View.GONE);
+            holder.sendResponse.setVisibility(View.GONE);
+            holder.textResponse.setVisibility(View.GONE);
             holder.sendResponse.setEnabled(false);
-        }else if(messages.get(position).getResponse().equals("Yes")){
-            holder.rgResponse.setEnabled(false);
-            holder.btnYes.setChecked(true);
-            holder.btnYes.setBackgroundColor(Color.GREEN);
-            holder.sendResponse.setEnabled(false);
+        }else if(surveyQuestion.getQuesType() == 0){
+            if (surveyQuestion.getResponse().equals("")) {
+                holder.rgResponse.setVisibility(View.GONE);
+                holder.btnYes.setVisibility(View.GONE);
+                holder.btnNo.setVisibility(View.GONE);
+                holder.sendResponse.setVisibility(View.VISIBLE);
+                holder.textResponse.setVisibility(View.VISIBLE);
+                holder.textResponse.setText("");
+                holder.textResponse.setEnabled(true);
+                holder.sendResponse.setEnabled(true);
+            }else{
+                holder.rgResponse.setVisibility(View.GONE);
+                holder.btnYes.setVisibility(View.GONE);
+                holder.btnNo.setVisibility(View.GONE);
+                holder.sendResponse.setVisibility(View.VISIBLE);
+                holder.textResponse.setVisibility(View.VISIBLE);
+                holder.textResponse.setEnabled(false);
+                holder.textResponse.setText(surveyQuestion.getResponse());
+                holder.sendResponse.setEnabled(false);
+            }
         }
 
         //holder.itemView.setEnabled(editMode);

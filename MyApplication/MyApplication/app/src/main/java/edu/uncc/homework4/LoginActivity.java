@@ -396,7 +396,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://caremesurvey.azurewebsites.net/oauth2/token")
+                .url("http://careme-surveypart2.azurewebsites.net/oauth2/token")
                 .header("Content-Type","application/x-www-form-urlencoded")
                 .post(formBody)
                 .build();

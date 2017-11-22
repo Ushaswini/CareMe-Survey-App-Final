@@ -1,7 +1,9 @@
 package edu.uncc.homework4;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -26,6 +28,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         sendNotification(from,message);
 
+
     }
 
     /*@Override
@@ -40,6 +43,14 @@ public class MyGcmListenerService extends GcmListenerService {
                 .setContentText(body);
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        final Intent notificationIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        notificationIntent.setAction(Intent.ACTION_MAIN);
+        notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PendingIntent intent = PendingIntent.getActivity(getApplicationContext(),
+                (int) System.nanoTime(), notificationIntent, 0);
+        mBuilder.setContentIntent(intent);
+
         mNotificationManager.notify(MESSAGE_NOTIFICATION_ID, mBuilder.build());
     }
 

@@ -19,11 +19,12 @@
     <application
         android:name=".SurveyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/carelogo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/carelogo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
 
         <!-- GCM Changes-->
         <receiver
@@ -37,28 +38,29 @@
         </receiver>
         <service
             android:name="edu.uncc.homework4.MyGcmListenerService"
-            android:exported="false" >
+            android:exported="true" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
             android:name="edu.uncc.homework4.MyInstanceIDListenerService"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
         <service
             android:name="edu.uncc.homework4.RegistrationIntentService"
-            android:exported="false">
+            android:exported="true">
         </service>
 
 
 
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,7 +79,7 @@
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".NavigationDrawerActivity"
-            android:label="@string/title_activity_navigation_drawer"
+            android:label="Care Me"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

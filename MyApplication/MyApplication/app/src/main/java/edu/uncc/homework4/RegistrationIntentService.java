@@ -61,8 +61,9 @@ public class RegistrationIntentService extends IntentService {
         }
 
         Request request = new Request.Builder()
-                .url("http://careme-surveypart2.azurewebsites.net/api/Users")//+user.getSurveyGroupId())
-                .header("Authorization", "Bearer "+access_token)//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
+               // .url("http://careme-surveypart2.azurewebsites.net/api/Users")//+user.getSurveyGroupId())
+                .url("http://careme-surveypart2.azurewebsites.net/api/Account/UserInfo?token="+access_token)
+                //.header("Authorization", "Bearer "+access_token)//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
                 .build();
 
         OkHttpClient client = new OkHttpClient();
@@ -77,9 +78,9 @@ public class RegistrationIntentService extends IntentService {
             public void onResponse(Call call, Response response) throws IOException {
                 String id = "";
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    for(int i = 0; i < jsonArray.length(); i++){
-                        JSONObject obj = jsonArray.getJSONObject(i);
+                   // JSONArray jsonArray = new JSONArray(response.body().string());
+                    //for(int i = 0; i < jsonArray.length(); i++){
+                        JSONObject obj = new JSONObject(response.body().string());
                         id = obj.getString("Id");
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());   //getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
@@ -88,9 +89,9 @@ public class RegistrationIntentService extends IntentService {
                         editor.commit();
 
                         Log.d("demo", "GCM Registration Token: " + finalToken);
-                        //Log.d("demo", "id: " + id + " " );
+                        Log.d("demo", "id: " + id + " " );
                         sendDeviceID(finalToken, id);
-                    }
+                    //}
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -103,16 +104,23 @@ public class RegistrationIntentService extends IntentService {
     }
 
     public void sendDeviceID(String s, String id){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String access_token = pref.getString("token","");
+        //SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //String access_token = pref.getString("token","");
+
+        //SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("token",Context.MODE_PRIVATE);   //getPreferences(Context.MODE_PRIVATE);
+        //SharedPreferences.Editor editor = sharedPref.edit();
+        //editor.  .putString("token",access_token);
+        //editor.putInt(getString(R.string.saved_high_score), newHighScore);
+        //editor.commit();
+        //String access_token = sharedPref.getString("token","");
 
         RequestBody formBody = new FormBody.Builder()
-                .add("Id", id)
+                .add("UserId", id)
                 .add("DeviceId", s)
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://careme-surveypart2.azurewebsites.net/api/Users")//+user.getSurveyGroupId())
+                .url("http://careme-surveypart2.azurewebsites.net/api/Users/UpdateDeviceId")//+user.getSurveyGroupId())
                 .header("Authorization", "Bearer "+access_token)//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
                 .post(formBody)
                 .build();
@@ -127,7 +135,7 @@ public class RegistrationIntentService extends IntentService {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
+                Log.d("demo","refresh token "+response.body().string() );
             }
         });
     }

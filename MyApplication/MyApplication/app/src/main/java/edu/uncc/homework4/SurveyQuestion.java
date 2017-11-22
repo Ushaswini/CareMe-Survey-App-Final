@@ -8,8 +8,9 @@ import java.io.Serializable;
 
 public class SurveyQuestion implements Serializable {
 
-    String question, userId;
+    String question, userId, surveyTime;
     String response,studyGrpId,surveyId,responseDate;
+    int quesType;
 
     public SurveyQuestion() {
     }
@@ -60,5 +61,21 @@ public class SurveyQuestion implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getQuesType() {
+        return quesType;
+    }
+
+    public void setQuesType(int quesType) {
+        this.quesType = quesType;
+    }
+
+    public String getSurveyTime() {
+        return surveyTime;
+    }
+
+    public void setSurveyTime(String surveyTime) {
+        this.surveyTime = surveyTime;
     }
 }

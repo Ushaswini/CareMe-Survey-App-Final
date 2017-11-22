@@ -95,8 +95,9 @@ public void getMyActivity(Activity activity){
         final String access_token = sharedPref.getString("token","");
         //final String userId = sharedPref.getString("userId", "");
         final Request requestUserInfo = new Request.Builder()
-                .url("http://careme-surveypart2.azurewebsites.net/api/Users")
-                .header("Authorization", "Bearer "+ access_token)// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
+                //.url("http://careme-surveypart2.azurewebsites.net/api/Users")
+                .url("http://careme-surveypart2.azurewebsites.net/api/Account/UserInfo?token="+access_token)
+                //.header("Authorization", "Bearer "+ access_token)// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
                 //.header("Content-Type","application/x-www-form-urlencoded")
                 .build();
         OkHttpClient client1 = new OkHttpClient();
@@ -120,11 +121,12 @@ public void getMyActivity(Activity activity){
 
                 String userId=response.body().string();
                 try {
-                    JSONArray jsonArray = new JSONArray(userId);
-                    for(int i = 0; i < jsonArray.length(); i++){
-                        JSONObject js = jsonArray.getJSONObject(i);
+                    Log.d("demo","responsebody: " + userId);
+                    //JSONArray jsonArray = new JSONArray(userId);
+                    //for(int i = 0; i < jsonArray.length(); i++){
+                        JSONObject js = new JSONObject(userId);
                         userId = js.getString("Id");
-                    }
+                    //}
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -142,6 +144,7 @@ public void getMyActivity(Activity activity){
 
 
                 final String finalUserId = userId;
+                Log.d("demo","final" + finalUserId);
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -175,6 +178,8 @@ public void getMyActivity(Activity activity){
                                             sq.setResponse(jsonO.getString("ResponseText"));
                                             sq.setSurveyId(jsonO.getString("SurveyId"));
                                         sq.setUserId(finalUserId);
+                                        sq.setQuesType(jsonO.getInt("QuestionType"));
+                                        sq.setSurveyTime(jsonO.getString("ResponseReceivedTime"));
                                         //sq.setStudyGrpId(jsonO.getString("StudyGroupId"));
                                         //sq.setResponseDate(jsonO.getString(""));
                                             //Log.d()
@@ -190,6 +195,8 @@ public void getMyActivity(Activity activity){
                                         sq.setSurveyId(jsonO.getString("SurveyId"));
                                         sq.setStudyGrpId(jsonO.getString("StudyGroupId"));
                                         sq.setUserId(finalUserId);
+                                        sq.setQuesType(jsonO.getInt("QuestionType"));
+                                        sq.setSurveyTime(jsonO.getString("SurveyCreatedTime"));
                                         sq.setResponse("");
                                         //Log.d()
                                         //messagesList.add(jsonO.getString("QuestionText"));
@@ -248,8 +255,9 @@ public void getMyActivity(Activity activity){
         final String access_token = sharedPref.getString("token","");
         //final String userId = sharedPref.getString("userId", "");
         final Request requestUserInfo = new Request.Builder()
-                .url("http://careme-surveypart2.azurewebsites.net/api/Account/Users")
-                .header("Authorization", "Bearer "+ access_token)// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
+                //.url("http://careme-surveypart2.azurewebsites.net/api/Account/Users")
+                .url("http://careme-surveypart2.azurewebsites.net/api/Account/UserInfo?token="+access_token)
+                //.header("Authorization", "Bearer "+ access_token)// eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IjU3YWVlZjhmLTMxNDAtNDI5NS04N2ViLThmMzA0Y2Q0Y2ZlNiIsInN1YiI6InVzZXIxIiwicm9sZSI6IlVzZXIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiNDE0ZTE5MjdhMzg4NGY2OGFiYzc5ZjcyODM4MzdmZDEiLCJleHAiOjE1MTEyMjkwNTUsIm5iZiI6MTUxMTE0MjY1NX0._c9mA6bFl09xY_vB1Z8iqIYueFKuEfXlzj8J6Os9MtE")
                 .build();
         OkHttpClient client1 = new OkHttpClient();
         client1.newCall(requestUserInfo).enqueue(new Callback() {
@@ -271,11 +279,11 @@ public void getMyActivity(Activity activity){
                 editor.putString("user",gson.toJson(user));*/
                 String userId="";
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    for(int i = 0; i < jsonArray.length(); i++){
-                        JSONObject js = jsonArray.getJSONObject(i);
+                    //JSONArray jsonArray = new JSONArray(response.body().string());
+                    //for(int i = 0; i < jsonArray.length(); i++){
+                        JSONObject js = new JSONObject(response.body().string());
                         userId = js.getString("Id");
-                    }
+                    //}
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -292,7 +300,7 @@ public void getMyActivity(Activity activity){
                         .build();
 
 
-
+                final String finalUserId = userId;
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -325,6 +333,9 @@ public void getMyActivity(Activity activity){
                                         sq.setQuestion(jsonO.getString("QuestionText"));
                                         sq.setResponse(jsonO.getString("ResponseText"));
                                         sq.setSurveyId(jsonO.getString("SurveyId"));
+                                        sq.setUserId(finalUserId);
+                                        sq.setQuesType(jsonO.getInt("QuestionType"));
+                                        sq.setSurveyTime(jsonO.getString("ResponseReceivedTime"));
                                         //sq.setStudyGrpId(jsonO.getString("StudyGroupId"));
                                         //sq.setResponseDate(jsonO.getString(""));
                                         //Log.d()
@@ -339,6 +350,9 @@ public void getMyActivity(Activity activity){
                                         sq.setQuestion(jsonO.getString("QuestionText"));
                                         sq.setSurveyId(jsonO.getString("SurveyId"));
                                         sq.setStudyGrpId(jsonO.getString("StudyGroupId"));
+                                        sq.setUserId(finalUserId);
+                                        sq.setQuesType(jsonO.getInt("QuestionType"));
+                                        sq.setSurveyTime(jsonO.getString("SurveyCreatedTime"));
                                         sq.setResponse("");
                                         //Log.d()
                                         //messagesList.add(jsonO.getString("QuestionText"));

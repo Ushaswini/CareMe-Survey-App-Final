@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#EEEEEE">
 
     <LinearLayout
         android:id="@+id/messagebubble_layout"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/rounded_corner"
-        android:layout_margin="5dp">
+        android:background="@drawable/borderless_rounded"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:elevation="18dp"
+        android:minHeight="40dp"
+        >
 
     <TextView
         android:id="@+id/textViewMessage"
@@ -38,11 +46,28 @@
             android:text="No" />
     </RadioGroup>
 
+        <EditText
+            android:id="@+id/editTextAns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:hint="Enter Response" />
+
     <Button
         android:id="@+id/buttonSendResponse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send Response" />
+        android:text="Send Response"
+        />
+        <TextView
+            android:id="@+id/messageTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:textStyle="italic"
+            android:fontFamily="sans-serif"
+            android:layout_marginRight="5dp"
+            />
 
         </LinearLayout>
 </LinearLayout>
