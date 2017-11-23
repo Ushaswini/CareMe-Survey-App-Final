@@ -93,6 +93,10 @@
             }
             time2 = "";
         }
+        else if (frequencyOfNotifications == "1") {
+            time1 = "";
+            time2 = "";
+        }
         else if (frequencyOfNotifications == "2") {
             time1 = $('input[name=time1]').val();
             time2 = $('input[name=time2]').val();
@@ -110,8 +114,7 @@
         }
         var date = new Date();
         var surveyData = {
-            SurveyId: guid(),
-            
+            SurveyId: guid(),            
             StudyGroupId: self.selectedStudyGroupForSurvey(),
             SurveyCreatedTime: date.toString(),
             FrequencyOfNotifications: frequencyOfNotifications,
@@ -129,6 +132,13 @@
 
         }).done(function (data) {
             console.log("data is received");
+            console.log(data);
+            alert("Published!");
+            self.selectedQuestionId('');
+            self.selectedStudyGroupForSurvey('');
+            $('input[name=time1]').val("");
+            $('input[name=time2]').val("");
+            $('input[name=frequency]:checked').prop('checked', false);
 
         }).fail(showError);
 

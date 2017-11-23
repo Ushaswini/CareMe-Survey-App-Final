@@ -39,7 +39,11 @@ namespace Homework05.Models
 
         public string LoginProvider { get; set; }
     }
-
+    public class DeviceIdModel
+    {
+        public string DeviceId { get; set; }
+        public string UserId { get; set; }
+    }
     public class UserLoginInfoViewModel
     {
         public string LoginProvider { get; set; }

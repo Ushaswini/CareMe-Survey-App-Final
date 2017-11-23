@@ -187,7 +187,7 @@ namespace Homework05.API_Controllers
                         }
                     case Frequency.Hourly:
                         //PushNotificationsAsync();
-                        SendNotification(survey);
+                        SendNotification(surveyToSend);
                         RecurringJob.AddOrUpdate(survey.SurveyId, () => SendNotification(surveyToSend), Cron.Hourly, TimeZoneInfo.Local);
                         break;
                     case Frequency.TwiceDaily:

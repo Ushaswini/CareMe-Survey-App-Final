@@ -80,11 +80,11 @@ namespace Homework05.API_Controllers
 
             return roleUsers;
         }
-
-        [ResponseType(typeof(void))]
-        public IHttpActionResult UpdateDeviceId(UserInfoViewModel user)
+        [Route("UpdateDeviceId")]
+        [ResponseType(typeof(DeviceIdModel))]
+        public IHttpActionResult PostDeviceId(DeviceIdModel user)
         {
-            var userToModify = db.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+            var userToModify = db.Users.Where(u => u.Id == user.UserId).FirstOrDefault();
             if (userToModify == null)
             {
                 return NotFound();
@@ -98,7 +98,7 @@ namespace Homework05.API_Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(user.Id))
+                if (!UserExists(user.UserId))
                 {
                     return NotFound();
                 }
@@ -108,7 +108,7 @@ namespace Homework05.API_Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(user);
         }
 
         private bool UserExists(string id)
