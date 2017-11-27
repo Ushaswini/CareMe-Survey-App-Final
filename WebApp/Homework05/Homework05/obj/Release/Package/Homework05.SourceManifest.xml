@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
-  <IisApp path="C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\obj\Release\Package\PackageTmp" />
-  <setAcl path="C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
-  <setAcl path="C:\Users\ushas\Desktop\Homework-05\WebApp\Homework05\Homework05\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
+  <IisApp path="C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Release\Package\PackageTmp" />
+  <setAcl path="C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Release\Package\PackageTmp" setAclResourceType="Directory" />
+  <setAcl path="C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Release\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
 </sitemanifest>

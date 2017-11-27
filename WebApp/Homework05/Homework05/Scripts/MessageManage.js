@@ -10,6 +10,10 @@
     self.surveysDataTable = $("#surveysTable").DataTable(
         {
             data: self.surveys,
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
             columns: [{ data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseText" }, { data: "ResponseReceivedTime" }]
         });
     LoadSurveys();
@@ -48,6 +52,10 @@
         self.surveysDataTable = $("#surveysTable").DataTable(
             {
                 data: self.surveys,
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ],
                 columns: [{ data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseText" }, { data: "ResponseReceivedTime" }]
             });
     }

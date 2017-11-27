@@ -3,19 +3,43 @@
     @Scripts.Render("~/bundles/auth")
 }
 
-<div class="col-sm-12" style="float:left;margin:20px" >
-    <h3 style="margin-bottom:10px;margin-top:10px">Surveys Published</h3>
-    <table class="table table-hover table-bordered table-striped" id="surveysTable">
+<div class="col-sm-12" style="float:left" >
+    
+    <h3>Surveys Responses Received</h3>
+    <div class="col-sm-12" style="float:left;margin-bottom:30px;margin-top:10px;padding-left:0px">
+        <div class="col" style="float:left;margin-right:10px">
+            <select class="form-control" data-bind="options: studyGroups,
+                                                                        optionsCaption: 'Choose study group',
+                                                                        optionsText: 'StudyName',
+                                                                        optionsValue: 'StudyGroupId',
+                                                                        value: selectedStudyGroupForSurvey"></select>
+
+        </div>
+        <div class="col" style="float:left">
+            <button class="btn btn-style" style="height:34px" id="btnFilter">Filter</button>
+        </div>
+    </div>
+   
+    
+    
+
+    
+    <table class="table table-hover table-bordered table-striped" id="responsesTable">
         <thead>
             <tr>
-                <th>Survey Id</th>
                 <th>Study Group Name</th>
-                <th>Survey Created Time</th>
+                <th>Survey Name</th>
+                <th>User Name</th>
+                <th>Question</th>
+                <th>Question Frequency</th>
+                <th>Responded Time</th>
+                <th>Response</th>
             </tr>
         </thead>
 
     </table>
-    <h3 style="margin-bottom:10px;margin-top:10px">Generate Reports</h3>
+
+    <!--<h3 style="margin-bottom:10px;margin-top:10px">Generate Reports</h3>
     <div class="col" style="float:left; margin:10px">
         <button type="submit" id="navigateToSurveyManager1" class="btn btn-style">Get Report for Study group-1</button>
     </div>
@@ -24,5 +48,5 @@
     </div>
     <div class="col" style="float:left; margin:10px">
         <button type="submit" id="navigateToSurveyManager3" class="btn btn-style">Get Report for study group-3</button>
-    </div>
+    </div>-->
 </div>

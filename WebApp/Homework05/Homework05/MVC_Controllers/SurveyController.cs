@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Homework05.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Homework_04.Controllers
 {
+    [AuthorizationFilter]
     public class SurveyController : Controller
     {
         public ActionResult Manage()

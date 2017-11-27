@@ -8,11 +8,21 @@
     var tokenKey = 'accessToken';
 
     console.log("document loaded");
-
+    self.surveysDataTable = $("#surveysTable").DataTable(
+        {
+            data: self.surveys,
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
+            columns: [{ data: "SurveyId" }, { data: "StudyGroupName" }, { data: "SurveyCreatedTime" }]
+        });
 
     LoadStudyGroups();
     LoadQuestions();
-
+    LoadSurveys();
+    
+    
     function LoadQuestions() {
         var headers = {};
         var token = sessionStorage.getItem(tokenKey);
@@ -52,6 +62,41 @@
             }
         }).fail(showError);
     }
+
+    function LoadSurveys() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/Surveys',
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.surveys = data;
+            BindSurveysToDatatable(data);
+        }).fail(showError);
+    }
+
+    function BindSurveysToDatatable(data) {
+        console.log(self.surveys);
+        self.surveysDataTable.clear();
+        self.surveysDataTable.destroy();
+        self.surveysDataTable = $("#surveysTable").DataTable(
+            {
+                data: self.surveys,
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ],
+                columns: [{ data: "SurveyId" }, { data: "StudyGroupName" }, { data: "SurveyCreatedTime" }]
+            });
+    }
+
 
     $('input[name=frequency]').change(function () {
         var value = $('input[name=frequency]:checked').val();
@@ -156,7 +201,20 @@
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
     }
-
+    $('#questionType').on('change', function () {
+        console.log("in change");
+        //alert(this.value);
+        //alert($(this).find(":selected").val());
+        if (this.value == 0) {
+            $('#options').css('visibility', 'hidden');
+        }
+        if (this.value == 1) {
+            $('#options').css('visibility', 'visible');
+        }
+        if (this.value == 2) {
+            $('#options').css('visibility', 'hidden');
+        }
+    })
     function ViewModel() {
 
         self.userName = ko.observable();
@@ -164,6 +222,7 @@
         self.studyGroups = ko.observableArray([]);
         self.questions = ko.observableArray([]);
         self.users = {}
+        self.surveys = {}
         self.userEmail = ko.observable();
         self.selectedStudyGroup = ko.observable();
         self.selectedStudyGroupForSurvey = ko.observable();

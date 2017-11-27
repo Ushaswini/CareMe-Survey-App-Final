@@ -1,10 +1,12 @@
-﻿using Microsoft.Owin.Security;
+﻿using Homework05.Models;
+using Microsoft.Owin.Security;
 using System;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Homework_04.Controllers
 {
+    [AuthorizationFilter]
     public class AdminController : Controller
     {
         private IAuthenticationManager AuthenticationManager { get { return HttpContext.GetOwinContext().Authentication; } }
@@ -20,8 +22,8 @@ namespace Homework_04.Controllers
         {
 
            // ViewBag.Title = "ManageResource";
-           // return View("~/Views/Admin/ManageResource.cshtml");
-            return RedirectToAction("Dashboard", "Admin");
+            return View("~/Views/Admin/ManageResource.cshtml");
+           // return RedirectToAction("Dashboard", "Admin");
 
         }
 

@@ -16,11 +16,11 @@
     <div class="col-sm-12">
         <div class="col" style="float:right; margin:10px">
             <button type="button" class="btn btn-style btn-lg" data-toggle="modal" data-target="#myModal">Add Question</button>
-            <!-- Modal -->
+            
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
 
-                    <!-- Modal content-->
+                    
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -42,7 +42,7 @@
                                     <div class="col" style="float:left; margin:10px">
                                         <input type="text" data-bind="value: questionText" class="form-control" placeholder="Question Text">
                                     </div>
-                               
+
                                     <div class="col" style="float:left; margin:10px;">
                                         <select id="questionType" class="form-control">
                                             <option selected disabled>Question type</option>
@@ -52,18 +52,18 @@
                                         </select>
                                     </div>
                                     <div class="col" style="float:left; margin:10px;">
-                                        <div id="options" class="col">
+                                        <div id="options" class="col" style="visibility:hidden">
                                             <input type="text" data-bind="value: options" class="form-control" placeholder="Comma seperated options">
                                         </div>
-                                        
-                                        
+
+
 
                                     </div>
-                                   
+
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                
+
                                 <button type="submit" class="btn btn-default">Add</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
@@ -75,8 +75,8 @@
         </div>
     </div>
 
-    <div class="col-sm-12" style="float:left">
-        <h3>Publish Question/Message to Study Group</h3>
+    <div class="col-sm-12" style="float:left;margin-bottom:20px">
+        <h3>Publish Survey to Study Group</h3>
         <div class="col" style="float:left; margin:10px">
             <select class="form-control" data-bind="options: studyGroups,
                                                                         optionsCaption: 'Choose study group',
@@ -92,9 +92,9 @@
                                                                         value: selectedQuestionId"></select>
         </div>
         <div class="col" style="float:left; margin:10px">
-           <!-- <form>
-                <input type="text" name="txtQuestion" class="form-control" placeholder="Question">
-            </form>-->
+            <!-- <form>
+                 <input type="text" name="txtQuestion" class="form-control" placeholder="Question">
+             </form>-->
         </div>
         <div class="col" style="float:left; margin:10px">
             <form>
@@ -109,9 +109,25 @@
                 <input type="time" title="second time slot" name="time2" value="12" style=" visibility:hidden">
             </form>
         </div>
-        
+        <div class="col" style="float:left">
+            <button class="btn btn-style" style="float:left; height:34px" id="btnPublishQuestion">Publish</button>
+        </div>
+
     </div>
+
     <div class="col-sm-12" style="float:left">
-        <button class="btn btn-style" style="float:left; margin:10px;height:34px" id="btnPublishQuestion">Publish</button>
-    </div>
+        
+   
+
+    <h3 style="margin-bottom:20px;margin-top:10px">Surveys Already Published</h3>
+    <table class="table table-hover table-bordered table-striped" id="surveysTable">
+        <thead>
+            <tr>
+                <th>Survey Id</th>
+                <th>Study Group Name</th>
+                <th>Survey Created Time</th>
+            </tr>
+        </thead>
+
+    </table>
 </div>

@@ -21,9 +21,29 @@ namespace Homework05.API_Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/SurveyResponses
-        public IQueryable<SurveyResponse> GetSurveyResponses()
+        public IList<ResponseDTO> GetSurveyResponses()
         {
-            return db.SurveyResponses;
+            var result = db.SurveyResponses.Include(r => r.StudyGroup)
+                                           .Include(r => r.Survey)
+                                           .Include(r => r.Survey.Question)
+                                           .Include(r => r.User)
+                                           .Select(r => new ResponseDTO
+                                           {
+                                               StudyGroupName = r.StudyGroup.StudyName,
+                                               SurveyId = r.SurveyId,
+                                               UserName = r.User.UserName,
+                                               ResponseReceivedTime = r.SurveyResponseReceivedTime,
+                                               ResponseText = r.UserResponseText,
+                                               QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
+                                               QuestionText = r.Survey.Question.QuestionText,
+                                               QuestionId = r.Survey.Question.QuestionId,
+                                               QuestionType = r.Survey.Question.QuestionType,
+                                               Options = r.Survey.Question.Options,
+                                               ResponseId = r.SurveyResponseId
+
+                                                // SurveyComments = r.SurveyComments
+                                            });
+            return result.ToList();
         }
         [ResponseType(typeof(SurveyResponse))]
         public IList<ResponseDTO> GetSurveyResponseForStudy(string studyGroupId)

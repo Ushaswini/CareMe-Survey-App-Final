@@ -7,46 +7,7 @@
 
     console.log("document loaded");
 
-    self.surveysDataTable = $("#responsesTable").DataTable(
-        {
-            data: self.responses,
-            columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
-        });
-    LoadSurveys();
-
-    function LoadSurveys() {
-        var headers = {};
-        var token = sessionStorage.getItem(tokenKey);
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
-        }
-        //string id = Application["groupId"].ToString();
-
-        var id = sessionStorage.getItem('groupId');
-        console.log(id);
-        console.log(token);
-        $.ajax({
-            type: 'GET',
-            url: '/api/SurveyResponses?studyGroupId=' + id,
-            headers: headers,
-            contentType: 'application/json; charset=utf-8'
-        }).done(function (data) {
-            console.log(data);
-            self.responses = data;
-            BindSurveysToDatatable(data);
-        }).fail(showError);
-    }
-
-    function BindSurveysToDatatable(data) {
-        console.log(self.surveys);
-        self.surveysDataTable.clear();
-        self.surveysDataTable.destroy();
-        self.surveysDataTable = $("#responsesTable").DataTable(
-            {
-                data: self.responses,
-                columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" },{ data: "ResponseReceivedTime" }, { data: "ResponseText" }]
-            });
-    }
+    
     function ViewModel() {
 
         self.userName = ko.observable();

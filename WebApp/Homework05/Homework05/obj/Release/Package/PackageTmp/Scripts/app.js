@@ -13,7 +13,7 @@
         console.log(jqXHR);
         self.result(jqXHR.status + ': ' + jqXHR.statusText);
 
-        var response = jqXHR.responseJSON;
+        var response = jqXHR.resultObject;
         if (response) {
             if (response.Message) self.errors.push(response.Message);
             if (response.ModelState) {
@@ -31,8 +31,33 @@
             if (response.error_description) self.errors.push(response.error_description);
         }
     }
-    
+
     self.login = function () {
+        console.log('login clicked')
+        var loginData = {
+            grant_type: 'password',
+            username: self.loginEmail(),
+            password: self.loginPassword()
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/Home/LoginAsync',
+            data: loginData
+        }).done(function (data) {
+            console.log(data);
+            if (data.success == true) {
+                console.log(data.resultObject.Access_Token);
+                sessionStorage.setItem(tokenKey, data.resultObject.Access_Token);
+                window.location.href = 'Admin/Dashboard';
+            } else {
+                self.errors.removeAll();
+                self.errors.push(data.responseText);
+            }
+            
+        }).fail(showError);
+    }
+    
+    /*self.login = function () {
         self.result('');
         self.errors.removeAll();
         console.log("login clicked");
@@ -58,11 +83,11 @@
                 // Cache the access token in session storage.
                 sessionStorage.setItem(tokenKey, data.access_token);
                 window.location.href = 'Admin/Dashboard';
-               // $("#sidebar-wrapper").css('display', 'block');
+                // $("#sidebar-wrapper").css('display', 'block');
                 //$("#lblGreetings").css('display', 'block');
-                }).fail(showError);
             }).fail(showError);
-
+        }).fail(showError);
+    }*/
         function error (error) {
             //self.result('Only admin can login');
             self.errors.push('Only Admin  can login!!');
@@ -85,8 +110,8 @@
             // Cache the access token in session storage.
             sessionStorage.setItem(tokenKey, data.access_token);            
             window.location.href = 'Admin/Dashboard';
-        }).fail(showError);*/
-    }
+        }).fail(showError);
+    }*/
 }
 
 var app = new ViewModel();

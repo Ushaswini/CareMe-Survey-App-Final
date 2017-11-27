@@ -50,4 +50,29 @@ namespace Homework05.Models
 
         public string ProviderKey { get; set; }
     }
+
+    public class LoginViewModel
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string GrantType { get; set; }
+
+        public Dictionary<string, string> ToDict()
+        {
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+            parameters.Add("username", this.UserName);
+            parameters.Add("password", this.Password);
+            parameters.Add("grant_type", this.GrantType);
+
+            return parameters;
+        }
+
+    }
+
+    public class TokenModel
+    {
+        public string Access_Token { get; set; }
+    }
 }

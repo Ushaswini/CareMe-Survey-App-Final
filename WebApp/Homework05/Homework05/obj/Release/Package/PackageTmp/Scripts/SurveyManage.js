@@ -7,22 +7,106 @@
 
     console.log("document loaded");
    
-    self.surveysDataTable = $("#surveysTable").DataTable(
+    self.surveysDataTable = $("#responsesTable").DataTable(
         {
-            data: self.surveys,
-            columns: [{ data: "SurveyId" }, { data: "StudyGroupName" }, {data:"SurveyCreatedTime"}]
+            data: self.responses,
+            dom: 'Bfrtip',
+            buttons: [
+                'print'
+            ],
+            columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
         });
-    LoadSurveys();
+    LoadAllResponses();
+    LoadStudyGroups();
 
-    $('#surveyTable tbody').on('click', 'tr', function () {
-        
-    });
+    function LoadStudyGroups() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/StudyGroups',
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                self.studyGroups.push(data[i]);
+            }
+        }).fail(showError);
+    }
 
-    $('#navigateToSurveyManager1').click(function () {
+    function LoadAllResponses() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        //string id = Application["groupId"].ToString();
+
+        var id = self.selectedStudyGroupForSurvey();
+        console.log(id);
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/SurveyResponses',
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.responses = data;
+            BindSurveysToDatatable(data);
+        }).fail(showError);
+    }
+    function LoadResponses() {
+        var headers = {};
+        var token = sessionStorage.getItem(tokenKey);
+        if (token) {
+            headers.Authorization = 'Bearer ' + token;
+        }
+        //string id = Application["groupId"].ToString();
+
+        var id = self.selectedStudyGroupForSurvey();
+        console.log(id);
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/api/SurveyResponses?studyGroupId=' + id,
+            headers: headers,
+            contentType: 'application/json; charset=utf-8'
+        }).done(function (data) {
+            console.log(data);
+            self.responses = data;
+            BindSurveysToDatatable(data);
+        }).fail(showError);
+    }
+
+    function BindSurveysToDatatable(data) {
+        console.log(self.responses);
+        self.surveysDataTable.clear();
+        self.surveysDataTable.destroy();
+        self.surveysDataTable = $("#responsesTable").DataTable(
+            {
+                data: self.responses,
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ],
+                columns: [{ data: "StudyGroupName" }, { data: "SurveyId" }, { data: "UserName" }, { data: "QuestionText" }, { data: "QuestionFrequency" }, { data: "ResponseReceivedTime" }, { data: "ResponseText" }]
+            });
+    }
+
+    
+
+    $('#btnFilter').click(function () {
+        LoadResponses();
         // Response.Redirect("~/Views/Survey/Manage.cshtml");
-        sessionStorage.setItem('groupId', '1');
+        //sessionStorage.setItem('groupId', '1');
        // Application["groupId"] = "1";
-        window.location.href = yourApp.Urls.responseManageUrl;
+        //window.location.href = yourApp.Urls.responseManageUrl;
         //replace("~/Views/Survey/Manage");
 
     })
@@ -43,47 +127,22 @@
 
     })
 
-    function LoadSurveys() {
-        var headers = {};
-        var token = sessionStorage.getItem(tokenKey);
-        if (token) {
-            headers.Authorization = 'Bearer ' + token;
-        }
-        console.log(token);
-        $.ajax({
-            type: 'GET',
-            url: '/api/Surveys',
-            headers: headers,
-            contentType: 'application/json; charset=utf-8'
-        }).done(function (data) {
-            console.log(data);
-            self.surveys = data;
-            BindSurveysToDatatable(data);
-        }).fail(showError);
-    }
-
-    function BindSurveysToDatatable(data) {
-        console.log(self.surveys);
-        self.surveysDataTable.clear();
-        self.surveysDataTable.destroy();
-        self.surveysDataTable = $("#surveysTable").DataTable(
-            {
-                data: self.surveys,
-                columns: [{ data: "SurveyId" }, { data: "StudyGroupName" }, { data: "SurveyCreatedTime" }]
-            });
-    }
+    
     function ViewModel() {
 
         self.userName = ko.observable();
         self.userPassword = ko.observable();
         self.studyGroups = ko.observableArray([]);
-        self.surveys = {}
+        self.selectedStudyGroupForSurvey = ko.observable();
+        //self.selectedStudyGroupForSurvey(self.studyGroups()[0]);
+
         self.userEmail = ko.observable();
         self.selectedStudyGroup = ko.observable();
-        self.selectedStudyGroupForSurvey = ko.observable();
+        //self.selectedStudyGroupForSurvey = ko.observable();
 
         self.result = ko.observable();
         self.errors = ko.observableArray([]);
+        self.responses = {}
     }
 
     function showError(jqXHR) {
