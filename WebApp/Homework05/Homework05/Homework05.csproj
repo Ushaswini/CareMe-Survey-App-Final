@@ -277,6 +277,18 @@
     <Compile Include="Migrations\201711201650489_Question-Options.Designer.cs">
       <DependentUpon>201711201650489_Question-Options.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711302228017_DeviceTable.cs" />
+    <Compile Include="Migrations\201711302228017_DeviceTable.Designer.cs">
+      <DependentUpon>201711302228017_DeviceTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711302234078_DeviceIdTables.cs" />
+    <Compile Include="Migrations\201711302234078_DeviceIdTables.Designer.cs">
+      <DependentUpon>201711302234078_DeviceIdTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711302240244_AddIdToDeviceTable.cs" />
+    <Compile Include="Migrations\201711302240244_AddIdToDeviceTable.Designer.cs">
+      <DependentUpon>201711302240244_AddIdToDeviceTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthorizationFilter.cs" />
     <Compile Include="Models\QuestionsModels.cs" />
@@ -425,6 +437,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711201650489_Question-Options.resx">
       <DependentUpon>201711201650489_Question-Options.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711302228017_DeviceTable.resx">
+      <DependentUpon>201711302228017_DeviceTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711302234078_DeviceIdTables.resx">
+      <DependentUpon>201711302234078_DeviceIdTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711302240244_AddIdToDeviceTable.resx">
+      <DependentUpon>201711302240244_AddIdToDeviceTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

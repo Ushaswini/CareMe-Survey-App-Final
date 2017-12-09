@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Homework05.Models
 {
@@ -41,6 +42,7 @@ namespace Homework05.Models
     }
     public class DeviceIdModel
     {
+        [Key]
         public string DeviceId { get; set; }
         public string UserId { get; set; }
     }

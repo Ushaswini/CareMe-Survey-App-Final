@@ -168,6 +168,7 @@
             QuestionId: selectedQuestionId()
         }
 
+        console.log(JSON.stringify(surveyData));
         $.ajax({
             type: 'POST',
             url: '/api/Surveys/Post',

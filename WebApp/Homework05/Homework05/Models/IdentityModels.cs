@@ -45,5 +45,9 @@ namespace Homework05.Models
         public System.Data.Entity.DbSet<Homework05.Models.SurveyResponse> SurveyResponses { get; set; }
 
         public System.Data.Entity.DbSet<Homework05.Models.Question> Questions { get; set; }
+
+        public System.Data.Entity.DbSet<Homework05.Models.Device> Devices { get; set; }
+
+        public System.Data.Entity.DbSet<Homework05.Models.DeviceIdModel> DeviceId { get; set; }
     }
 }

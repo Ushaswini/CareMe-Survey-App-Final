@@ -83,4 +83,12 @@ namespace Homework05.Models
         public List<ResponseDTO> SurveysResponded { get; set; }
         public List<SurveyDTO> Surveys { get; set; }
     }
+
+    public class Device
+    {
+        public string UserId { get; set; }
+        [Key]
+        public string Id { get; set; }
+        public string DeviceId { get; set; }
+    }
 }

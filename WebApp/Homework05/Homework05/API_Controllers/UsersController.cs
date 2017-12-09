@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -82,33 +83,61 @@ namespace Homework05.API_Controllers
         }
         [Route("UpdateDeviceId")]
         [ResponseType(typeof(DeviceIdModel))]
-        public IHttpActionResult PostDeviceId(DeviceIdModel user)
+        public IHttpActionResult PostDeviceId(Device device)
         {
-            var userToModify = db.Users.Where(u => u.Id == user.UserId).FirstOrDefault();
+            var userToModify = db.Users.Where(u => u.Id == device.UserId).FirstOrDefault();
             if (userToModify == null)
             {
                 return NotFound();
             }
-            userToModify.DeviceId = user.DeviceId;
-            db.Entry(userToModify).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(user.UserId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var deviceAlreadyPresent = db.Devices.Where(d => d.DeviceId.Equals(device.DeviceId)).FirstOrDefault();
 
-            return Ok(user);
+            if(deviceAlreadyPresent == null)
+            {
+                device.Id = System.Guid.NewGuid().ToString();
+                //string deviceId = "";
+                db.Devices.Add(device);
+
+                // userToModify.DeviceId = deviceId;
+                // db.Entry(userToModify).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    // Retrieve the error messages as a list of strings.
+                    var errorMessages = ex.EntityValidationErrors
+                            .SelectMany(x => x.ValidationErrors)
+                            .Select(x => x.ErrorMessage);
+
+                    // Join the list to a single string.
+                    var fullErrorMessage = string.Join("; ", errorMessages);
+
+                    // Combine the original exception message with the new one.
+                    var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                    // Throw a new DbEntityValidationException with the improved exception message.
+                    throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(device.UserId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            
+           
+
+            return Ok(device);
         }
 
         private bool UserExists(string id)
