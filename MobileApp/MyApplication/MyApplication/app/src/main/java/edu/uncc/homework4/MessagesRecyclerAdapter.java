@@ -73,19 +73,16 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         public ViewHolder(Context context,final View itemView) {
             super(itemView);
 
-            tvMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
-            BtnSend = (Button) itemView.findViewById(R.id.buttonSendResponse);
+            tvMessage = (TextView) itemView.findViewById(R.id.tvMessage);
+            BtnSend = (Button) itemView.findViewById(R.id.btnSendResponse);
             rbYes = (RadioButton) itemView.findViewById(R.id.radioButtonYes);
             rbNo = (RadioButton) itemView.findViewById(R.id.radioButtonNo);
             rgOptions = (RadioGroup) itemView.findViewById(R.id.rgChoice);
-            etReplyMsg = (EditText)itemView.findViewById(R.id.editTextAns);
+            etReplyMsg = (EditText)itemView.findViewById(R.id.etAnswer);
             tvTime = (TextView)itemView.findViewById(R.id.messageTime);
             imMessageTick = (ImageView)itemView.findViewById(R.id.imgResponseTick);
 
             vContext = context;
-
-            SharedPreferences sharedPrefUser = PreferenceManager.getDefaultSharedPreferences(mContext);
-            Gson gson = new Gson();
 
             if(BtnSend.isEnabled()){
                 if (rgOptions.getCheckedRadioButtonId() != -1 || etReplyMsg.getText() != null){
@@ -94,75 +91,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                         listener.onItemClick(position, rgOptions.getCheckedRadioButtonId(), etReplyMsg.getText().toString());
                     }
                 }
-
             }
-
-
-          /*  if (BtnSend.isClickable()) {
-                BtnSend.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                      //  if (listener != null) {
-                        String responseText = "";
-                        if(messages.get(getAdapterPosition()).getQuesType() == QuestionType.TextEntry) {
-                            responseText = etReplyMsg.getText().toString();
-                        }else{
-
-                        if(rbYes.isChecked()){responseText = "Yes";}else{responseText = "No";}}
-                            final int position = getAdapterPosition();
-                            if (position != RecyclerView.NO_POSITION) {
-                                //listener.onItemClick(itemView, position);
-                                BtnSend.setEnabled(false);
-                                /*RequestBody formBody = new FormBody.Builder()
-
-                                        .build();
-                                SharedPreferences sharedPref = mContext.getSharedPreferences("token",Context.MODE_PRIVATE);
-                                String access_token = sharedPref.getString("token","");
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
-                                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GST-0500"));
-                                Date currDate = null;
-                                try {
-                                    currDate = simpleDateFormat.parse((new Date()).toString());
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                                RequestBody formBody = new FormBody.Builder()
-                                        .add("UserId", messages.get(getAdapterPosition()).getUserId())
-                                        .add("StudyGroupId", messages.get(getAdapterPosition()).getStudyGrpId())
-                                        .add("SurveyId", messages.get(getAdapterPosition()).getSurveyId())
-                                        .add("UserResponseText",responseText )
-                                        .add("SurveyResponseReceivedTime", (new Date()).toString())
-                                        .build();
-
-                                Request request = new Request.Builder()
-                                        .url(Constants.POST_RESPONSE_URL)
-                                        .header("Content-Type","application/x-www-form-urlencoded")
-                                        .header("Authorization", "Bearer "+access_token)
-                                        .post(formBody)
-                                        .build();
-
-
-                                OkHttpClient client = new OkHttpClient();
-                                client.newCall(request).enqueue(new Callback() {
-                                    @Override
-                                    public void onFailure(Call call, IOException e) {
-                                        Log.d("demo","response failure");
-                                       // Toast.makeText(getContext(),"Error in sending response",Toast.LENGTH_SHORT);
-                                    }
-
-                                    @Override
-                                    public void onResponse(Call call, Response response) throws IOException {
-                                       // Toast.makeText(getContext(),"Response sent successfully !!",Toast.LENGTH_SHORT);
-                                        listener.onItemClick(itemView,position);
-                                        Log.d("demo","response success");
-
-                                    }
-                                });
-                            }
-                        //}
-                    }
-                });
-            }*/
         }
 
     }
@@ -192,7 +121,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
 
     @Override
     public void onBindViewHolder(MessagesRecyclerAdapter.ViewHolder holder, int position) {
-        //MusicTrack track = tracks.get(position);
+        
         SurveyQuestion surveyQuestion = messages.get(position);
         holder.tvMessage.setText(surveyQuestion.getQuestion());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
