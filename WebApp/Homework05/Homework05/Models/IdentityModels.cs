@@ -9,10 +9,7 @@ namespace Homework05.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public string StudyGroupId { get; set; }
-        public string Gender { get; set; }   
         
-        public string DeviceId { get; set; }
 
         //Navigation Properties
         public StudyGroup StudyGroup { get; set; }
@@ -29,7 +26,7 @@ namespace Homework05.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("AzureDatabaseConnection", throwIfV1Schema: false)
+            : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
         
@@ -38,16 +35,22 @@ namespace Homework05.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<Homework05.Models.Survey> Surveys { get; set; }
+        public System.Data.Entity.DbSet<Survey> Surveys { get; set; }
 
-        public System.Data.Entity.DbSet<Homework05.Models.StudyGroup> StudyGroups { get; set; }
+        public System.Data.Entity.DbSet<StudyGroup> StudyGroups { get; set; }
 
-        public System.Data.Entity.DbSet<Homework05.Models.SurveyResponse> SurveyResponses { get; set; }
+        public System.Data.Entity.DbSet<SurveyResponse> SurveyResponses { get; set; }
 
-        public System.Data.Entity.DbSet<Homework05.Models.Question> Questions { get; set; }
+        public System.Data.Entity.DbSet<Question> Questions { get; set; }
 
-        public System.Data.Entity.DbSet<Homework05.Models.Device> Devices { get; set; }
+        public System.Data.Entity.DbSet<Device> Devices { get; set; }
 
-        public System.Data.Entity.DbSet<Homework05.Models.DeviceIdModel> DeviceId { get; set; }
+        public System.Data.Entity.DbSet<X_Survey_Group> X_Survey_Groups { get; set; }
+        public System.Data.Entity.DbSet<X_Survey_Question> X_Survey_Questions { get; set; }
+
+        public System.Data.Entity.DbSet<X_User_Group> X_User_Groups { get; set; }
+
+
+
     }
 }

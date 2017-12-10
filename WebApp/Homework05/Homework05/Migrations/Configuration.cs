@@ -6,6 +6,7 @@ namespace Homework05.Migrations
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.Validation;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Homework05.Models.ApplicationDbContext>
@@ -31,56 +32,32 @@ namespace Homework05.Migrations
             {
                 Email = "admin@gmail.com",
                 UserName = "Admin"
-                // StudyGroupId = 1 + ""
             };
-
-            manager.Create(admin, "Admin@6010");
-
-            var adminUser = manager.FindByName("Admin");
-            manager.AddToRoles(adminUser.Id, "Admin");
-
-            //var admin = context.Users.Where(u => u.UserName == "Admin").FirstOrDefault();
-
-
-           /*  var studyGroup1 = new Models.StudyGroup
-             {
-                 StudyGroupId = 1 + "",
-                 StudyCoordinatorId = adminUser.Id,
-                 StudyName = "Study Group - 1",
-                 StudyGroupCreadtedTime = DateTime.Now.ToString()
-             };
-
-            var studyGroup2 = new Models.StudyGroup
+            try
             {
-                StudyGroupId = 2 + "",
-                StudyCoordinatorId = adminUser.Id,
-                StudyName = "Study Group - 2",
-                StudyGroupCreadtedTime = DateTime.Now.ToString()
-            };
+                manager.Create(admin, "Admin@6010");
 
-            var studyGroup3 = new Models.StudyGroup
+                var adminUser = manager.FindByName("Admin");
+                manager.AddToRoles(adminUser.Id, "Admin");
+            }
+           
+
+             catch (DbEntityValidationException ex)
             {
-                StudyGroupId = 3 + "",
-                StudyCoordinatorId = adminUser.Id,
-                StudyName = "Study Group - 3",
-                StudyGroupCreadtedTime = DateTime.Now.ToString()
-            };
+                // Retrieve the error messages as a list of strings.
+                var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
 
-            context.StudyGroups.AddOrUpdate(studyGroup1);*/
+                // Join the list to a single string.
+                var fullErrorMessage = string.Join("; ", errorMessages);
 
+                // Combine the original exception message with the new one.
+                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
 
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+                // Throw a new DbEntityValidationException with the improved exception message.
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+            }
         }
     }
 }

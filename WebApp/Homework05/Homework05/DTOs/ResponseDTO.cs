@@ -9,17 +9,22 @@ namespace Homework05.DTOs
     public class ResponseDTO
     {
         //Unique identifiers 
-        public string ResponseId { get; set; }
-
-        public string SurveyId { get; set; }
-
-        public string QuestionId { get; set; }
-
-        
+        public int ResponseId { get; set; }
+        public int SurveyId { get; set; }        
         public string UserName { get; set; }
         public string StudyGroupName { get; set; }
+        public string SurveyName { get; set; }
 
+        public List<QuestionResponseDTO> QuestionResponses { get; set; }
+
+       
+
+    }
+
+    public class QuestionResponseDTO
+    {
         //Input properties
+        public int QuestionId { get; set; }
         public string QuestionText { get; set; }
         public QuestionType QuestionType { get; set; }
         public string Options { get; set; }
@@ -29,6 +34,5 @@ namespace Homework05.DTOs
         public string ResponseText { get; set; }
 
         public string ResponseReceivedTime { get; set; }
-
     }
 }

@@ -22,6 +22,12 @@ namespace Homework05.API_Controllers
             return db.StudyGroups;
         }
 
+        public IList<StudyGroup> GetStudyGroupsForCoordinator(string coordinatorId)
+        {
+            var groups = db.StudyGroups.Where(s => s.StudyCoordinatorId.Equals(coordinatorId));
+            return groups.ToList();
+        }
+
         // GET: api/StudyGroups/5
         [ResponseType(typeof(StudyGroup))]
         public IHttpActionResult GetStudyGroup(string id)
@@ -37,14 +43,14 @@ namespace Homework05.API_Controllers
 
         // PUT: api/StudyGroups/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutStudyGroup(string id, StudyGroup studyGroup)
+        public IHttpActionResult PutStudyGroup(int id, StudyGroup studyGroup)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != studyGroup.StudyGroupId)
+            if (id != studyGroup.Id)
             {
                 return BadRequest();
             }
@@ -87,7 +93,7 @@ namespace Homework05.API_Controllers
             }
             catch (DbUpdateException)
             {
-                if (StudyGroupExists(studyGroup.StudyGroupId))
+                if (StudyGroupExists(studyGroup.Id))
                 {
                     return Conflict();
                 }
@@ -97,7 +103,7 @@ namespace Homework05.API_Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = studyGroup.StudyGroupId }, studyGroup);
+            return CreatedAtRoute("DefaultApi", new { id = studyGroup.Id }, studyGroup);
         }
 
         // DELETE: api/StudyGroups/5
@@ -125,9 +131,9 @@ namespace Homework05.API_Controllers
             base.Dispose(disposing);
         }
 
-        private bool StudyGroupExists(string id)
+        private bool StudyGroupExists(int id)
         {
-            return db.StudyGroups.Count(e => e.StudyGroupId == id) > 0;
+            return db.StudyGroups.Count(e => e.Id == id) > 0;
         }
     }
 }

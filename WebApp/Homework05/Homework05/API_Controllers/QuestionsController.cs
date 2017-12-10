@@ -38,14 +38,14 @@ namespace Homework05.API_Controllers
 
         // PUT: api/Questions/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutQuestion(string id, Question question)
+        public IHttpActionResult PutQuestion(int id, Question question)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != question.QuestionId)
+            if (id != question.Id)
             {
                 return BadRequest();
             }
@@ -88,7 +88,7 @@ namespace Homework05.API_Controllers
             }
             catch (DbUpdateException)
             {
-                if (QuestionExists(question.QuestionId))
+                if (QuestionExists(question.Id))
                 {
                     return Conflict();
                 }
@@ -98,7 +98,7 @@ namespace Homework05.API_Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = question.QuestionId }, question);
+            return CreatedAtRoute("DefaultApi", new { id = question.Id }, question);
         }
 
         // DELETE: api/Questions/5
@@ -126,9 +126,9 @@ namespace Homework05.API_Controllers
             base.Dispose(disposing);
         }
 
-        private bool QuestionExists(string id)
+        private bool QuestionExists(int id)
         {
-            return db.Questions.Count(e => e.QuestionId == id) > 0;
+            return db.Questions.Count(e => e.Id == id) > 0;
         }
     }
 }

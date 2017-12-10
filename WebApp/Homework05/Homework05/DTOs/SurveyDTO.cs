@@ -8,17 +8,23 @@ namespace Homework05.DTOs
 {
     public class SurveyDTO
     {
-        public string SurveyId { get; set; }
+        public int SurveyId { get; set; }        
+        public string SurveyName { get; set; }
+        public SurveyType SurveyType { get; set; }
+        public List<QuestionDTO> Questions { get; set; }
+
+        public string StudyCoordinatorId { get; set; }
+        public string StudyCoordinatorName { get; set; }
+    }
+
+    public class QuestionDTO
+    {
+        public int Id { get; set; }
         public string QuestionText { get; set; }
-        public string StudyGroupId { get; set; }
-        public string SurveyCreatedTime { get; set; }
-        public string StudyGroupName { get; set; }
-        public string QuestionId { get; set; }       
         public QuestionType QuestionType { get; set; }
         public string Options { get; set; }
-
-        public string QuestionFrequency { get; set; }
-        public string Time1 { get; set; }
-        public string Time2 { get; set; }
+        public double Minimum { get; set; }
+        public double Maximum { get; set; }
+        public double StepSize { get; set; }
     }
 }

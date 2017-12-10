@@ -7,13 +7,13 @@ namespace Homework05.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class QuestionOptions : IMigrationMetadata
+    public sealed partial class InitialSetUp : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(QuestionOptions));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialSetUp));
         
         string IMigrationMetadata.Id
         {
-            get { return "201711201650489_Question-Options"; }
+            get { return "201712090702286_Initial-SetUp"; }
         }
         
         string IMigrationMetadata.Source

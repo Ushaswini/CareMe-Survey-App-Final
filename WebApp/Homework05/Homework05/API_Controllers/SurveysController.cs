@@ -17,16 +17,55 @@ using Newtonsoft.Json;
 
 namespace Homework05.API_Controllers
 {
+    //Get stored surveys
+    //Get surveys for study coordinator
+    //Get surveys for study group
+    //Get surveys for user
     [Authorize]
     [RoutePrefix("api/Surveys")]
     public class SurveysController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        //Get stored surveys
         // GET: api/Surveys
         public IList<SurveyDTO> GetSurveys()
         {
-            return db.Surveys.Include(s => s.StudyGroup).Include(s => s.Question).Select(s => new SurveyDTO
+            List<SurveyDTO> surveysSaved = new List<SurveyDTO>();
+            var surveysInDb = db.Surveys.ToList();
+            foreach (var s in surveysInDb)
+            {
+                var questionsInSurvey = db.X_Survey_Questions
+                                            .Include(q => q.Question)
+                                            .Where(q => q.SurveyId == s.Id)
+                                            .Select(q => new QuestionDTO
+                                            {
+                                                Id = q.Id,
+                                                QuestionText = q.Question.QuestionText,
+                                                QuestionType = q.Question.QuestionType,
+                                                Maximum = q.Question.Maximum,
+                                                Minimum = q.Question.Minimum,
+                                                StepSize = q.Question.StepSize,
+                                                Options = q.Question.Options
+                                            });
+                                            
+                var survey = new SurveyDTO
+                {
+                    SurveyId = s.Id,
+                    SurveyName = s.SurveyName,
+                    SurveyType = s.SurveyType,
+                    Questions = questionsInSurvey.ToList()
+                };
+
+                surveysSaved.Add(survey);
+            }
+
+            return surveysSaved;
+
+
+
+
+            /*return db.Surveys.Include(s => s.StudyGroup).Include(s => s.Question).Select(s => new SurveyDTO
             {
                 SurveyId = s.SurveyId,
                 SurveyCreatedTime = s.SurveyCreatedTime,
@@ -40,12 +79,103 @@ namespace Homework05.API_Controllers
                 Time1 = s.Time1,
                 Time2 = s.Time2
 
-            }).ToList();
+            }).ToList();*/
+
+
         }
 
-        public IList<SurveyDTO> GetSurveysForStudyGroup(string studyGroupId)
+        [Route("Surveys")]
+        //Get surveys for study coordinator
+        public IList<SurveyDTO> GetSurveysForStudyCoordinator(string coordinatorId)
         {
-            var surveys = db.Surveys.Where(s => s.StudyGroupId == studyGroupId).Include(s => s.Question).Include(s => s.StudyGroup).Select(s => new SurveyDTO
+            List<SurveyDTO> surveys = new List<SurveyDTO>();
+
+            var surveysForCoordinator = db.X_Survey_Groups
+                                            .Include(s => s.Survey)
+                                            .Join(db.StudyGroups
+                                                    .Include(g => g.StudyCoordinator)
+                                                    .Where(g => g.StudyCoordinatorId.Equals(coordinatorId)),
+                                                  survey_group => survey_group.StudyGroupId,
+                                                  group => group.Id,
+                                                  (survey_group, group) => new { survey_group, group });
+
+            foreach (var s in surveysForCoordinator)
+            {
+                var questionsInSurvey = db.X_Survey_Questions
+                                            .Include(q => q.Question)
+                                            .Where(q => q.SurveyId == s.survey_group.SurveyId)
+                                            .Select(q => new QuestionDTO
+                                            {
+                                                Id = q.Id,
+                                                QuestionText = q.Question.QuestionText,
+                                                QuestionType = q.Question.QuestionType,
+                                                Maximum = q.Question.Maximum,
+                                                Minimum = q.Question.Minimum,
+                                                StepSize = q.Question.StepSize,
+                                                Options = q.Question.Options
+                                            })
+                                            .ToList();
+                var survey = new SurveyDTO
+                {
+                    SurveyId = s.survey_group.SurveyId,
+                    SurveyName = s.survey_group.Survey.SurveyName,
+                    StudyCoordinatorId = s.group.StudyCoordinator.Id,
+                    StudyCoordinatorName = s.group.StudyCoordinator.UserName,
+                    SurveyType = s.survey_group.Survey.SurveyType,
+                    Questions = questionsInSurvey.ToList()
+                };
+
+                surveys.Add(survey);
+            }
+
+            return surveys;
+        }
+
+        [Route("StudyGroupSurveys")]
+        //Get surveys for study group
+        public IList<SurveyDTO> GetSurveysForStudyGroup(int studyGroupId)
+        {
+            List<SurveyDTO> surveysSaved = new List<SurveyDTO>();
+
+            var surveysInStudyGroup = db.X_Survey_Groups
+                                            .Include(s => s.Survey)
+                                            .Where(s => s.StudyGroupId == studyGroupId)
+                                            .Join(db.StudyGroups.Include(g => g.StudyCoordinator),
+                                                    survey_group => survey_group.StudyGroupId,
+                                                    group => group.Id,
+                                                    (survey_group, group) => new { survey_group, group });
+
+            foreach (var s in surveysInStudyGroup)
+            {
+                var questionsInSurvey = db.X_Survey_Questions
+                                            .Include(q => q.Question)
+                                            .Where(q => q.SurveyId == s.survey_group.SurveyId)
+                                            .Select(q => new QuestionDTO
+                                            {
+                                                Id = q.Id,
+                                                QuestionText = q.Question.QuestionText,
+                                                QuestionType = q.Question.QuestionType,
+                                                Maximum = q.Question.Maximum,
+                                                Minimum = q.Question.Minimum,
+                                                StepSize = q.Question.StepSize,
+                                                Options = q.Question.Options
+                                            })
+                                            .ToList();
+                var survey = new SurveyDTO
+                {
+                    SurveyId = s.survey_group.SurveyId,
+                    SurveyName = s.survey_group.Survey.SurveyName,
+                    StudyCoordinatorId = s.group.StudyCoordinator.Id,
+                    StudyCoordinatorName = s.group.StudyCoordinator.UserName,
+                    SurveyType = s.survey_group.Survey.SurveyType,
+                    Questions = questionsInSurvey.ToList()
+                };
+
+                surveysSaved.Add(survey);
+            }
+
+            return surveysSaved;
+            /*var surveys = db.Surveys.Where(s => s.StudyGroupId == studyGroupId).Include(s => s.Question).Include(s => s.StudyGroup).Select(s => new SurveyDTO
             {
                 SurveyId = s.SurveyId,
                 SurveyCreatedTime = s.SurveyCreatedTime,
@@ -61,54 +191,107 @@ namespace Homework05.API_Controllers
 
             });
 
-            return surveys.ToList();
+            return surveys.ToList();*/
+
         }
 
-        [Route("GetSurvey")]
+        //Get surveys for user
+        [Route("UserSurveys")]
         public SurveysForUser GetSurveysForUser(string userId)
         {
+            List<ResponseDTO> responses = new List<ResponseDTO>();
+            List<SurveyDTO> surveys = new List<SurveyDTO>();
+
             var user = db.Users.Where(u => u.Id.Equals(userId)).FirstOrDefault();
-            var surveysTaken = db.SurveyResponses.Where(s => s.UserId == userId).Select(s => s.SurveyId).ToList();
 
-            var surveysResponded = db.SurveyResponses.Include(r => r.StudyGroup)
-                                            .Include(r => r.Survey)
-                                            .Include(r => r.User)
-                                            .Include(r => r.Survey.Question)
-                                            .Where(r => r.UserId == userId)
-                                            .Select(r => new ResponseDTO
+            var idsOfSurveysTaken = db.SurveyResponses.Where(s => s.UserId.Equals(userId)).Select(s => s.SurveyId).ToList();
+
+            var userStudyGroupId = db.X_User_Groups.Where(u => u.UserId.Equals(userId)).FirstOrDefault();
+
+            foreach (var id in idsOfSurveysTaken)
+            {
+                var responsesForQuestionsInSurvey = db.SurveyResponses
+                                                        .Where(r => r.SurveyId == id)
+                                                        .Include(r => r.Question)
+                                                        .Select(r => new QuestionResponseDTO
+                                                        {
+                                                            ResponseReceivedTime = r.ResponseReceivedTime,
+                                                            ResponseText = r.ResponseText,
+                                                            QuestionText = r.Question.QuestionText,
+                                                            QuestionId = r.Question.Id,
+                                                            QuestionType = r.Question.QuestionType,
+                                                            Options = r.Question.Options
+                                                        })
+                                                        .ToList();
+
+                var responseDTO = new ResponseDTO
+                {
+                    SurveyId = id,
+                    UserName = user.UserName,
+                    QuestionResponses = responsesForQuestionsInSurvey
+                };
+
+                responses.Add(responseDTO);
+            }
+
+
+
+            var surveysNotResponsed = (from r in db.X_Survey_Groups.Include("Survey")
+                                       where r.StudyGroupId.Equals(userStudyGroupId)
+                                       where !idsOfSurveysTaken.Contains(r.SurveyId)
+                                       select new Survey
+                                       {
+                                           Id = r.SurveyId,
+                                           SurveyName = r.Survey.SurveyName,
+                                           SurveyType = r.Survey.SurveyType
+                                       });
+
+            foreach (var s in surveysNotResponsed)
+            {
+                var questionsInSurvey = db.X_Survey_Questions
+                                            .Include(q => q.Question)
+                                            .Where(q => q.SurveyId == s.Id)
+                                            .Select(q => new QuestionDTO
                                             {
-                                                ResponseId = r.SurveyResponseId,
-                                                StudyGroupName = r.StudyGroup.StudyName,
-                                                SurveyId = r.SurveyId,
-                                                UserName = r.User.UserName,
-                                                ResponseReceivedTime = r.SurveyResponseReceivedTime,
-                                                ResponseText = r.UserResponseText,
-                                                QuestionFrequency = ((Frequency)r.Survey.FrequencyOfNotifications).ToString(),
-                                                QuestionText = r.Survey.Question.QuestionText,
-                                                QuestionId = r.Survey.Question.QuestionId,
-                                                QuestionType = r.Survey.Question.QuestionType,
-                                                Options = r.Survey.Question.Options
-                                            }).ToList();
+                                                Id = q.Id,
+                                                QuestionText = q.Question.QuestionText,
+                                                QuestionType = q.Question.QuestionType,
+                                                Maximum = q.Question.Maximum,
+                                                Minimum = q.Question.Minimum,
+                                                StepSize = q.Question.StepSize,
+                                                Options = q.Question.Options
+                                            })
+                                            .ToList();
+                var survey = new SurveyDTO
+                {
+                    SurveyId = s.Id,
+                    SurveyName = s.SurveyName,
+                    SurveyType = s.SurveyType,
+                    Questions = questionsInSurvey.ToList()
+                };
 
-            var surveys = (from r in db.Surveys.Include("Question")
-                           where r.StudyGroupId.Equals(user.StudyGroupId)
-                          where !surveysTaken.Contains(r.SurveyId)                          
-                          select new SurveyDTO
-                          {
-                            SurveyId = r.SurveyId,
-                            SurveyCreatedTime = r.SurveyCreatedTime,
-                            QuestionText = r.Question.QuestionText,
-                            StudyGroupId = r.StudyGroupId,
-                            StudyGroupName = r.StudyGroup.StudyName,
-                            Options =r.Question.Options,
-                            QuestionId = r.QuestionId,
-                            QuestionType = r.Question.QuestionType,
-                            QuestionFrequency = ((Frequency)r.FrequencyOfNotifications).ToString(),
-                            Time1 = r.Time1,
-                            Time2 = r.Time2
-                          }).ToList();
- 
-            return new SurveysForUser { Surveys = surveys, SurveysResponded = surveysResponded };
+                surveys.Add(survey);
+            }
+
+            /* var surveysNotResponsed = (from r in db.Surveys.Include("Question")
+                              where r.StudyGroupId.Equals(user.StudyGroupId)
+                             where !idsOfSurveysTaken.Contains(r.SurveyId)                          
+                             select new SurveyDTO
+                             {
+                               SurveyId = r.SurveyId,
+                               SurveyCreatedTime = r.SurveyCreatedTime,
+                               QuestionText = r.Question.QuestionText,
+                               StudyGroupId = r.StudyGroupId,
+                               StudyGroupName = r.StudyGroup.StudyName,
+                               Options =r.Question.Options,
+                               QuestionId = r.QuestionId,
+                               QuestionType = r.Question.QuestionType,
+                               QuestionFrequency = ((Frequency)r.FrequencyOfNotifications).ToString(),
+                               Time1 = r.Time1,
+                               Time2 = r.Time2
+                             }).ToList();*/
+
+            return new SurveysForUser { Surveys = surveys, SurveysResponded = responses };
         }
 
 
@@ -127,14 +310,14 @@ namespace Homework05.API_Controllers
 
         // PUT: api/Surveys/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutSurvey(string id, Survey survey)
+        public IHttpActionResult PutSurvey(int id, Survey survey)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != survey.SurveyId)
+            if (id != survey.Id)
             {
                 return BadRequest();
             }
@@ -158,104 +341,175 @@ namespace Homework05.API_Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+
         }
 
-        
+        [Route("Publish")]
+        public IHttpActionResult PublishSurvey(PublishSurveyViewModel survey)
+        {
+            var surveyDetails = db.Surveys.Find(survey.SurveyId);
+            if (surveyDetails != null)
+            {
+                if (surveyDetails.SurveyType == SurveyType.Message)
+                {
+                    //based on recurrence Add to X_Survey_Group
+
+                    try
+                    {
+                        switch (survey.FrequencyOfNotifications)
+                        {
+                            case Frequency.Daily:
+                                {
+                                    String[] times = survey.Time1.Split(':');
+                                    String cornExpression = times[1] + " " + times[0] + " * * * ";
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "", () => SendNotification(survey), cornExpression, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    break;
+                                }
+                            case Frequency.Hourly:
+                                {
+                                    SendNotification(survey);
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "", () => SendNotification(survey), Cron.Hourly, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    break;
+                                }
+                            case Frequency.TwiceDaily:
+                                {
+                                    String[] times = survey.Time1.Split(':');
+                                    String cornExpression = times[1] + " " + times[0] + " * * *";
+                                    String[] times2 = survey.Time2.Split(':');
+                                    String cornExpression2 = times2[1] + " " + times2[0] + " * * *";
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "First", () => SendNotification(survey), cornExpression, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    RecurringJob.AddOrUpdate(survey.SurveyId + "Second", () => SendNotification(survey), cornExpression2, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
+                                    break;
+                                }
+                        }
+                    }
+                    catch (DbUpdateException)
+                    {
+                        if (SurveyExists(survey.SurveyId))
+                        {
+                            return Conflict();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+
+                }
+                else
+                {
+                    //add to X_Survey_Group and send right now
+                    SendNotification(survey);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+            return null;
+        }
+
+        //Add survey to db -- not publishing
         // POST: api/Surveys
         [Route("Post")]
         [ResponseType(typeof(Survey))]
-        public IHttpActionResult PostSurvey(Survey survey)
+        public IHttpActionResult PostSurvey(SurveyViewModel survey)
         {
+            var surveyToSave = new Survey { SurveyName = survey.SurveyName, SurveyType = survey.SurveyType };
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            db.Surveys.Add(surveyToSave);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception oExcep)
+            {
+                Console.Write(oExcep.Message);
+                throw;
+            }
 
-           
-
-            //db.Surveys.Add(survey);
+            var id = surveyToSave.Id;
+            foreach (var question in survey.QuestionIds)
+            {
+                // add to X_Survey_Question
+                db.X_Survey_Questions.Add(new X_Survey_Question { SurveyId = id, QuestionId = question });
+            }
 
             try
             {
-                //db.SaveChanges();
-                var question = db.Questions.Where(q => q.QuestionId.Equals(survey.QuestionId));
-                //
-                switch (survey.FrequencyOfNotifications)
-                {
-                    case Frequency.Daily:
-                        {
-                            String[] times = survey.Time1.Split(':');
-                            String cornExpression =  times[1] + " " + times[0] + " * * * ";
-                            RecurringJob.AddOrUpdate(survey.SurveyId, () => SendNotification(survey), cornExpression, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-                            break;
-                        }
-                    case Frequency.Hourly:
-                        //PushNotificationsAsync();
-                        SendNotification(survey);
-                        RecurringJob.AddOrUpdate(survey.SurveyId, () => SendNotification(survey), Cron.Hourly, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-                        break;
-                    case Frequency.TwiceDaily:
-                        {
-                            String[] times = survey.Time1.Split(':');
-                            String cornExpression = times[1] + " " + times[0] + " * * *";
-                            String[] times2 = survey.Time2.Split(':');
-                            String cornExpression2 = times2[1] + " " + times2[0] + " * * *";
-                            RecurringJob.AddOrUpdate(survey.SurveyId + "First", () => SendNotification(survey), cornExpression, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-                            RecurringJob.AddOrUpdate(survey.SurveyId + "Second", () => SendNotification(survey), cornExpression2, TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
-                            break;
-                        }
-                }
-                //RecurringJob.AddOrUpdate(survey.SurveyId,() => PushNotificationsAsync(), Cron.Minutely);
-                //PushNotificationsAsync();
-                //push notification to users who opted in
+                db.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (Exception e)
             {
-                if (SurveyExists(survey.SurveyId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                Console.Write(e.Message);
+                throw;
             }
 
-            return Ok(survey);
+            return Ok(surveyToSave);
+
+            /*
+           
+            return Ok(survey);*/
+
+
         }
 
-        public void SendNotification(Survey surveyToSend1)
+        public void SendNotification(PublishSurveyViewModel surveyToSend)
         {
             try
             {
-                surveyToSend1.SurveyCreatedTime = DateTime.Now.ToString();
-                surveyToSend1.SurveyId = Guid.NewGuid().ToString();
-                db.Surveys.Add(surveyToSend1);
+                var surveyToPublish = new X_Survey_Group
+                {
+                    SurveyId = surveyToSend.SurveyId,
+                    StudyGroupId = surveyToSend.StudyGroupId,
+                    SurveyCreatedTime = DateTime.Now.ToString(),
+                    FrequencyOfNotifications = surveyToSend.FrequencyOfNotifications,
+                    Time1 = surveyToSend.Time1,
+                    Time2 = surveyToSend.Time2
+                };
+
+
+                db.X_Survey_Groups.Add(surveyToPublish);
 
                 db.SaveChanges();
 
-                var surveyToSend = db.Surveys.Include(s => s.Question).Where(s => s.SurveyId.Equals(surveyToSend1.SurveyId)).FirstOrDefault();
-
                 List<string> deviceIds = new List<string>();
-                var usersInGroup = db.Users.Where(u => u.StudyGroupId.Equals(surveyToSend1.StudyGroupId)).ToList();
-                foreach (var user in usersInGroup)
+                var userIdsInGroup = db.X_User_Groups.Where(u => u.StudyGroupId.Equals(surveyToSend.StudyGroupId)).ToList();
+                foreach (var userId in userIdsInGroup)
                 {
-                    var devicesForOneUser = db.Devices.Where(d => d.UserId.Equals(user.Id));
-                    foreach(var device in devicesForOneUser)
+                    var devicesForOneUser = db.Devices.Where(d => d.UserId.Equals(userId));
+                    foreach (var device in devicesForOneUser)
                     {
                         deviceIds.Add(device.DeviceId);
                     }
-
-                       // deviceIds.Add(user.DeviceId);
                 }
-                //deviceIds.RemoveAt(0);
-                //deviceIds.Add("ebR53cvFzu8:APA91bHk0D_Bwth1jeD-pJ4Q3aztg8C8USt8qFf5_fOV4aflIMVqjoc0HsAYQARcUfik3NfkuQG21jh265tJzBi7efPXw77__JEzaDSbPG8rAiZBTguobpNEjCPnCUPzM9zawIpgcO2o");
+
+                var survey = db.Surveys.Find(surveyToSend.SurveyId);
+
+                String messageToDisplay = "";
+                if (survey != null)
+                {
+                    if (survey.SurveyType == SurveyType.Message)
+                    {
+                        var question = db.X_Survey_Questions.Where(q => q.SurveyId == survey.Id).FirstOrDefault();
+                        messageToDisplay = question.Question.QuestionText;
+                    }
+                    else
+                    {
+                        messageToDisplay = survey.SurveyName + " published!!";
+                    }
+
+                }
                 SurveyPushNotification notification = new SurveyPushNotification
                 {
                     RegisteredDeviceIds = deviceIds,
                     Data = new PushNotificationData
                     {
-                        Message = surveyToSend.Question.QuestionText,
+                        Message = messageToDisplay,
                         Time = DateTime.Now.ToString()
                     }
 
@@ -300,10 +554,10 @@ namespace Homework05.API_Controllers
             {
 
             }
-                     
-            
 
-           
+
+
+
         }
 
         // DELETE: api/Surveys/5
@@ -331,9 +585,9 @@ namespace Homework05.API_Controllers
             base.Dispose(disposing);
         }
 
-        private bool SurveyExists(string id)
+        private bool SurveyExists(int id)
         {
-            return db.Surveys.Count(e => e.SurveyId == id) > 0;
+            return db.Surveys.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -257,41 +257,18 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="API_Controllers\AccountController.cs" />
-    <Compile Include="Migrations\201711191617473_Initial-Models.cs" />
-    <Compile Include="Migrations\201711191617473_Initial-Models.Designer.cs">
-      <DependentUpon>201711191617473_Initial-Models.cs</DependentUpon>
+    <Compile Include="Migrations\201712090702286_Initial-SetUp.cs" />
+    <Compile Include="Migrations\201712090702286_Initial-SetUp.Designer.cs">
+      <DependentUpon>201712090702286_Initial-SetUp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201711200145302_Device-Id.cs" />
-    <Compile Include="Migrations\201711200145302_Device-Id.Designer.cs">
-      <DependentUpon>201711200145302_Device-Id.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711200629020_Question.cs" />
-    <Compile Include="Migrations\201711200629020_Question.Designer.cs">
-      <DependentUpon>201711200629020_Question.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711201636006_AddQuestion.cs" />
-    <Compile Include="Migrations\201711201636006_AddQuestion.Designer.cs">
-      <DependentUpon>201711201636006_AddQuestion.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711201650489_Question-Options.cs" />
-    <Compile Include="Migrations\201711201650489_Question-Options.Designer.cs">
-      <DependentUpon>201711201650489_Question-Options.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711302228017_DeviceTable.cs" />
-    <Compile Include="Migrations\201711302228017_DeviceTable.Designer.cs">
-      <DependentUpon>201711302228017_DeviceTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711302234078_DeviceIdTables.cs" />
-    <Compile Include="Migrations\201711302234078_DeviceIdTables.Designer.cs">
-      <DependentUpon>201711302234078_DeviceIdTables.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711302240244_AddIdToDeviceTable.cs" />
-    <Compile Include="Migrations\201711302240244_AddIdToDeviceTable.Designer.cs">
-      <DependentUpon>201711302240244_AddIdToDeviceTable.cs</DependentUpon>
+    <Compile Include="Migrations\201712101611548_Edit-SurveyResponse.cs" />
+    <Compile Include="Migrations\201712101611548_Edit-SurveyResponse.Designer.cs">
+      <DependentUpon>201712101611548_Edit-SurveyResponse.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthorizationFilter.cs" />
     <Compile Include="Models\QuestionsModels.cs" />
+    <Compile Include="Models\SurveyViewModel.cs" />
     <Compile Include="MVC_Controllers\AdminController.cs" />
     <Compile Include="MVC_Controllers\HomeController.cs" />
     <Compile Include="DTOs\ResponseDTO.cs" />
@@ -423,29 +400,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711191617473_Initial-Models.resx">
-      <DependentUpon>201711191617473_Initial-Models.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712090702286_Initial-SetUp.resx">
+      <DependentUpon>201712090702286_Initial-SetUp.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711200145302_Device-Id.resx">
-      <DependentUpon>201711200145302_Device-Id.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711200629020_Question.resx">
-      <DependentUpon>201711200629020_Question.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711201636006_AddQuestion.resx">
-      <DependentUpon>201711201636006_AddQuestion.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711201650489_Question-Options.resx">
-      <DependentUpon>201711201650489_Question-Options.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711302228017_DeviceTable.resx">
-      <DependentUpon>201711302228017_DeviceTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711302234078_DeviceIdTables.resx">
-      <DependentUpon>201711302234078_DeviceIdTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711302240244_AddIdToDeviceTable.resx">
-      <DependentUpon>201711302240244_AddIdToDeviceTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712101611548_Edit-SurveyResponse.resx">
+      <DependentUpon>201712101611548_Edit-SurveyResponse.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

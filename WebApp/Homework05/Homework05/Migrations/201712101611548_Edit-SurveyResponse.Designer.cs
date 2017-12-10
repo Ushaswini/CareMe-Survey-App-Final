@@ -7,13 +7,13 @@ namespace Homework05.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class DeviceTable : IMigrationMetadata
+    public sealed partial class EditSurveyResponse : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DeviceTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(EditSurveyResponse));
         
         string IMigrationMetadata.Id
         {
-            get { return "201711302228017_DeviceTable"; }
+            get { return "201712101611548_Edit-SurveyResponse"; }
         }
         
         string IMigrationMetadata.Source

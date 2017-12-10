@@ -121,7 +121,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
 
     @Override
     public void onBindViewHolder(MessagesRecyclerAdapter.ViewHolder holder, int position) {
-        
+
         SurveyQuestion surveyQuestion = messages.get(position);
         holder.tvMessage.setText(surveyQuestion.getQuestion());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);

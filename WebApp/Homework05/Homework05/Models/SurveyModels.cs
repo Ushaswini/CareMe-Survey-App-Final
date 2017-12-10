@@ -8,21 +8,19 @@ using System.Web;
 
 namespace Homework05.Models
 {
-    public class Survey
+    public class L_QuestionType
     {
-        public string SurveyId { get; set; }
-        public string QuestionId { get; set; }
-        public string StudyGroupId { get; set; }
-        public string SurveyCreatedTime { get; set; }
-        [EnumDataType(typeof(Frequency))]
-        public Frequency FrequencyOfNotifications { get; set; }
-        public string Time1 { get; set; }
-        public string Time2 { get; set; }
+        public int Id { get; set; }
+        public string QuestionType { get; set; }
+    }
 
-        //Navigation Properties
-        public StudyGroup StudyGroup { get; set; }
-        public Question Question { get; set; }
-
+    public enum QuestionType
+    {
+        TextEntry,
+        Choice,
+        Scale,
+        Info,
+        Reminder
     }
 
     public enum Frequency
@@ -32,35 +30,115 @@ namespace Homework05.Models
         TwiceDaily
     }
 
-    public class SurveyResponse
+    public enum SurveyType
     {
-        public string SurveyId { get; set; }
+        Survey,
+        Message
+    }
+
+    public class Question
+    {
+        public int Id { get; set; }
+        public string QuestionText { get; set; }
+        public QuestionType QuestionType { get; set; }
+        public string Options { get; set; }
+        public double Minimum { get; set; }
+        public double Maximum { get; set; }
+        public double StepSize { get; set; }
+
+    }
+
+    public class Survey
+    {
+        public int Id { get; set; }
+        public string SurveyName { get; set; }
+        public SurveyType SurveyType { get; set; }
+
+    }
+
+    public class X_User_Group
+    {
+        public int Id { get; set; }
         public string UserId { get; set; }
-        public string SurveyResponseId { get; set; }
-        public string StudyGroupId { get; set; }
-        public string UserResponseText { get; set; }
-        public string SurveyResponseReceivedTime { get; set; }
-
-        public string SurveyComments { get; set; }
-
-        //Navigation Properties
-        public Survey Survey { get; set; }
+        public int StudyGroupId { get; set; }
+        //Navigation properties
         public ApplicationUser User { get; set; }
         public StudyGroup StudyGroup { get; set; }
-
     }
 
     public class StudyGroup
     {
-        public string StudyGroupId { get; set; }
-        public string StudyName { get; set; }
+        public int Id { get; set; }
         public string StudyCoordinatorId { get; set; }
+        public string StudyGroupName { get; set; }
         public string StudyGroupCreadtedTime { get; set; }
 
         //Navigation Properties
         [Required]
         public ApplicationUser StudyCoordinator { get; set; }
     }
+   
+    public class X_Survey_Question
+    {
+        public int Id { get; set; }
+        public int SurveyId { get; set; }
+        public int QuestionId { get; set; }
+
+        //Navigation properties
+        public Survey Survey { get; set; }
+        public Question Question { get; set; }
+    }
+
+    public class X_Survey_Group
+    {
+        public int Id { get; set; }
+        public int SurveyId { get; set; }
+        public int StudyGroupId { get; set; } 
+        public string SurveyCreatedTime { get; set; }
+
+        //If survey type is message;these are valid
+        [EnumDataType(typeof(Frequency))]
+        public Frequency FrequencyOfNotifications { get; set; }
+        public string Time1 { get; set; }
+        public string Time2 { get; set; }
+
+
+        //Navigation properties
+        public Survey Survey { get; set; }
+        public StudyGroup StudyGroup { get; set; }
+    }
+
+    public class X_Survey_Question_Response
+    {
+        public int Id { get; set; }
+        public int SurveyId { get; set; }
+        public int QuestionId { get; set; }
+        public int ResponseId { get; set; }
+        //Navigation Properties
+        public Question Question { get; set; }
+        public SurveyResponse SurveyResponse { get; set; }
+    }
+  
+
+
+
+    public class SurveyResponse
+    {
+        [Key]
+        public int Id { get; set; }
+        public int SurveyId { get; set; }
+        public int QuestionId { get; set; }
+        public string UserId { get; set; }        
+        public string ResponseText { get; set; }
+        public string ResponseReceivedTime { get; set; }
+
+        //Navigation Properties
+        public Survey Survey { get; set; }
+        public Question Question { get; set; }
+        public ApplicationUser User { get; set; }
+
+    }
+
 
     public class SurveyPushNotification
     {
@@ -88,7 +166,7 @@ namespace Homework05.Models
     {
         public string UserId { get; set; }
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string DeviceId { get; set; }
     }
 }

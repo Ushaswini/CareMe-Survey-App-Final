@@ -62,7 +62,7 @@ namespace Homework05.Models
 
         [Required]
         [Display(Name = "StudyGroupId")]
-        public string StudyGroupId { get; set; }
+        public int StudyGroupId { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

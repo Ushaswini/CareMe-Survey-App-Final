@@ -75,8 +75,8 @@ namespace Homework05.API_Controllers
                     Id = u.Id,
                     UserName = u.UserName,
                     Email = u.Email,
-                    StudyGroupId = u.StudyGroupId,
-                    StudyGroupName = u.StudyGroup.StudyName
+                    //StudyGroupId = u.StudyGroupId,
+                   // StudyGroupName = u.StudyGroup.StudyName
                 }).ToList();
 
             return roleUsers;
@@ -95,7 +95,7 @@ namespace Homework05.API_Controllers
 
             if(deviceAlreadyPresent == null)
             {
-                device.Id = System.Guid.NewGuid().ToString();
+                //device.Id = System.Guid.NewGuid().ToString();
                 //string deviceId = "";
                 db.Devices.Add(device);
 

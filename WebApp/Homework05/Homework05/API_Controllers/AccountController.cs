@@ -79,7 +79,7 @@ namespace Homework05.Controllers
             var model = new UserInfoViewModel
             {
                 Email = currentUser.Email,
-                SurveyGroupId = currentUser.StudyGroupId,
+                //SurveyGroupId = currentUser.StudyGroupId,
                 Id = currentUser.Id,
                 UserName = currentUser.UserName
             };
@@ -373,7 +373,9 @@ namespace Homework05.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, StudyGroupId = model.StudyGroupId};
+            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email,
+                //StudyGroupId = model.StudyGroupId
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

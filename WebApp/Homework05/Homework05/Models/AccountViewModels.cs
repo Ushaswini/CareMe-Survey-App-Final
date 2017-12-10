@@ -32,7 +32,7 @@ namespace Homework05.Models
 
         public string UserName { get; set; }
 
-        public string SurveyGroupId { get; set; }
+        public int SurveyGroupId { get; set; }
         public string Id { get; set; }
 
         public string DeviceId { get; set; }
