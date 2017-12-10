@@ -41,7 +41,7 @@ namespace Homework_04.Controllers
 
                     try
                     {
-                        HttpResponseMessage result = await client.PostAsync("http://careme-surveypart2.azurewebsites.net/oauth2/token", new FormUrlEncodedContent(Vm.ToDict()));
+                        HttpResponseMessage result = await client.PostAsync("http://caremesurvey-nc.azurewebsites.net/oauth2/token", new FormUrlEncodedContent(Vm.ToDict()));
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -79,7 +79,7 @@ namespace Homework_04.Controllers
                 try
                 {
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Session["accessToken"]);
-                    HttpResponseMessage result = await client.PostAsync("http://careme-surveypart2.azurewebsites.net/api/Account/Logout", null);
+                    HttpResponseMessage result = await client.PostAsync("http://caremesurvey-nc.azurewebsites.net/api/Account/Logout", null);
                     if (result.IsSuccessStatusCode)
                     {
                         Session.Clear();
