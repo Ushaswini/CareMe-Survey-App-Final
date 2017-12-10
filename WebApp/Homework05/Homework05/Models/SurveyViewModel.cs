@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Homework05.DTOs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,5 +25,14 @@ namespace Homework05.Models
         public Frequency FrequencyOfNotifications { get; set; }
         public string Time1 { get; set; }
         public string Time2 { get; set; }
+    }
+
+    public class SurveyResponseViewModel
+    {
+        public int Id { get; set; }
+        public int SurveyId { get; set; }        
+        public string UserId { get; set; }      
+
+        public List<QuestionResponseDTO> Responses { get; set; }
     }
 }

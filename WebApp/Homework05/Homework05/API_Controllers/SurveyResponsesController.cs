@@ -360,15 +360,26 @@ namespace Homework05.API_Controllers
 
         // POST: api/SurveyResponses
         [ResponseType(typeof(SurveyResponse))]
-        public IHttpActionResult PostSurveyResponse(SurveyResponse surveyResponse)
+        public IHttpActionResult PostSurveyResponse(SurveyResponseViewModel surveyResponse)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             //surveyResponse.Id = System.Guid.NewGuid();
-            db.SurveyResponses.Add(surveyResponse);
-
+            foreach(var resp in surveyResponse.Responses)
+            {
+                var response = new SurveyResponse {
+                    SurveyId = surveyResponse.SurveyId,
+                    UserId = surveyResponse.UserId,
+                    QuestionId = resp.QuestionId,                    
+                    ResponseText = resp.ResponseText,
+                    ResponseReceivedTime = resp.ResponseReceivedTime
+                };
+                db.SurveyResponses.Add(response);
+            }
+            
+            //Save responses
             try
             {
                 db.SaveChanges();
