@@ -1,5 +1,9 @@
-﻿using Homework05.Models;
+﻿using Homework05;
+using Homework05.Models;
+using Homework05.Providers;
+using Homework05.Results;
 using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,6 +20,11 @@ namespace Homework_04.Controllers
     public class HomeController : Controller
     {
         private IAuthenticationManager AuthenticationManager { get { return HttpContext.GetOwinContext().Authentication; } }
+
+        public HomeController()
+        {
+        }
+
         public ActionResult Index()
         {
             if(Session["accessToken"] != null)
