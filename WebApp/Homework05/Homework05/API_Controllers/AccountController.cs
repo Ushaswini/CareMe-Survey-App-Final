@@ -442,14 +442,14 @@ namespace Homework05.Controllers
         //POST api/Account/AddStudyCoordinator
         [Authorize(Roles = "Admin")]
         [Route("AddStudyCoordinator")]
-        public async Task<IHttpActionResult> AddStudyCoordinator(RegisterBindingModel model)
+        public async Task<IHttpActionResult> AddStudyCoordinator(AddStudyCoordinatorModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

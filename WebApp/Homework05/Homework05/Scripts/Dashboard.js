@@ -261,6 +261,7 @@
         
         self.userName = ko.observable();
         self.userPassword = ko.observable();
+        self.userConfirmPassword = ko.observable();
         self.studyGroups = ko.observableArray([]);
         self.users = {}
         self.questions = {}
@@ -293,7 +294,7 @@
             console.log("Data to add" + data);
             $.ajax({
                 type: 'POST',
-                url: '/api/Account/AddUser',
+                url: '/api/Account/AddStudyCoordinator',
                 headers: headers,
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
@@ -301,6 +302,38 @@
                 self.result("Done!");
 
                 $('#myModal').modal('toggle');
+                //Load users
+                LoadUsers();
+            }).fail(showError);
+        }
+
+        self.AddStudyCoordinator = function () {
+
+            self.result('');
+            self.errors.removeAll();
+
+            var data = {
+                UserName: self.userName(),
+                Password: self.userPassword(),
+                ConfirmPassword: self.userConfirmPassword(),
+                Email: self.userEmail()
+            };
+            var headers = {};
+            var token = sessionStorage.getItem(tokenKey);
+            if (token) {
+                headers.Authorization = 'Bearer ' + token;
+            }
+            console.log("Data to add" + data);
+            $.ajax({
+                type: 'POST',
+                url: '/api/Account/AddStudyCoordinator',
+                headers: headers,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (data) {
+                self.result("Done!");
+
+                $('#addCoordinatorModal').modal('toggle');
                 //Load users
                 LoadUsers();
             }).fail(showError);
