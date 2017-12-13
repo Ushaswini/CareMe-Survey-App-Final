@@ -66,6 +66,16 @@ namespace Homework05.Models
         public StudyGroup StudyGroup { get; set; }
     }
 
+    public class X_Coordinator_Group
+    {
+        public int Id { get; set; }
+        public string CoordinatorId { get; set; }
+        public int StudyGroupId { get; set; }
+        //Navigation properties
+        public ApplicationUser User { get; set; }
+        public StudyGroup StudyGroup { get; set; }
+    }
+
     public class StudyGroup
     {
         public int Id { get; set; }

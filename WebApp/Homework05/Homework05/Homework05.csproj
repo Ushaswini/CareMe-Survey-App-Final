@@ -265,6 +265,10 @@
     <Compile Include="Migrations\201712101611548_Edit-SurveyResponse.Designer.cs">
       <DependentUpon>201712101611548_Edit-SurveyResponse.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712132332498_X_Coordinator_Group.cs" />
+    <Compile Include="Migrations\201712132332498_X_Coordinator_Group.Designer.cs">
+      <DependentUpon>201712132332498_X_Coordinator_Group.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthorizationFilter.cs" />
     <Compile Include="Models\QuestionsModels.cs" />
@@ -406,6 +410,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712101611548_Edit-SurveyResponse.resx">
       <DependentUpon>201712101611548_Edit-SurveyResponse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712132332498_X_Coordinator_Group.resx">
+      <DependentUpon>201712132332498_X_Coordinator_Group.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

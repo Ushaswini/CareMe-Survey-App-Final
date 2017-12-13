@@ -80,12 +80,14 @@ namespace Homework05.API_Controllers
         [ResponseType(typeof(StudyGroup))]
         public IHttpActionResult PostStudyGroup(StudyGroup studyGroup)
         {
+            //Add group to StudyGroup and X_Coordinator_Group tables
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             db.StudyGroups.Add(studyGroup);
+            db.X_Coordinator_Groups.Add(new X_Coordinator_Group { StudyGroupId = studyGroup.Id, CoordinatorId = studyGroup.StudyCoordinatorId});
 
             try
             {

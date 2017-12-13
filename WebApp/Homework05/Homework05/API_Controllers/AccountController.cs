@@ -18,6 +18,7 @@ using Homework05.Models;
 using Homework05.Providers;
 using Homework05.Results;
 using System.Linq;
+using System.Data.Entity.Infrastructure;
 
 namespace Homework05.Controllers
 {
@@ -26,6 +27,7 @@ namespace Homework05.Controllers
     public class AccountController : BaseApiController
     {
         private const string LocalLoginProvider = "Local";
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
@@ -368,6 +370,7 @@ namespace Homework05.Controllers
         [Route("AddUser")]
         public async Task<IHttpActionResult> AddUser(AddUserModel model)
         {
+            //Add user to users table and X_User_Groups table with study group
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -387,9 +390,54 @@ namespace Homework05.Controllers
             //Add to role
             UserManager.AddToRole(user.Id, "User");
 
+            db.X_User_Groups.Add(new X_User_Group { UserId = user.Id, StudyGroupId = model.StudyGroupId });
+
+            try
+            {
+                db.SaveChanges();
+            }catch(DbUpdateException e)
+            {
+                if (StudyGroupExists(model.StudyGroupId))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             return Ok();
         }
+        private bool StudyGroupExists(int id)
+        {
+            return db.X_User_Groups.Count(e => e.StudyGroupId == id) > 0;
+        }
 
+        [Route("GetRoles")]
+        public IHttpActionResult GetUserRoles(string UserName)
+        {
+            if (!string.IsNullOrWhiteSpace(UserName))
+            {
+                ApplicationUser user = UserManager.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault(); 
+
+                if(user != null)
+                {
+                    var roles = UserManager.GetRoles(user.Id);
+                    return Ok(roles);
+                }
+                else
+                {
+                    NotFound();
+                }
+               
+
+            }
+
+            return NotFound();
+
+            
+        }
 
         //POST api/Account/AddStudyCoordinator
         [Authorize(Roles = "Admin")]

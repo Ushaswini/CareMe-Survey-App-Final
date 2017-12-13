@@ -26,7 +26,7 @@ namespace Homework05.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("AzureDatabaseConnection", throwIfV1Schema: false)
+            : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
         
@@ -47,8 +47,8 @@ namespace Homework05.Models
 
         public System.Data.Entity.DbSet<X_Survey_Group> X_Survey_Groups { get; set; }
         public System.Data.Entity.DbSet<X_Survey_Question> X_Survey_Questions { get; set; }
-
         public System.Data.Entity.DbSet<X_User_Group> X_User_Groups { get; set; }
+        public System.Data.Entity.DbSet<X_Coordinator_Group> X_Coordinator_Groups { get; set; }
 
 
 

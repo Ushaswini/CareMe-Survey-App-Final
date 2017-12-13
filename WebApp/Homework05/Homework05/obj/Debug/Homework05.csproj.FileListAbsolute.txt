@@ -374,3 +374,4 @@ C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.csproj.GenerateResource.Cache
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.csprojResolveAssemblyReference.cache
 C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.Migrations.EditSurveyResponse.resources
+C:\Code\ITCS-6010-Submissions\Homework05-CareMe-Part2\WebApp\Homework05\Homework05\obj\Debug\Homework05.Migrations.X_Coordinator_Group.resources
