@@ -20,28 +20,27 @@ using Homework05.Results;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
 
-namespace Homework05.Controllers
+namespace Homework05.API_Controllers
 {
-    
+
+    public interface IAccountController {
+        IHttpActionResult GetUserRoles(string UserName);
+    }
+
+
     [RoutePrefix("api/Account")]
-    public class AccountController : BaseApiController
+    public class AccountController : BaseApiController, IAccountController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationDbContext db = new ApplicationDbContext();
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-        public AccountController()
-        {
-        }
-
         public AccountController(ApplicationUserManager userManager, ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
         }
-
-        
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]

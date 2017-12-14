@@ -4,7 +4,7 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Homework_04.Controllers
+namespace Homework05.MVC_Controllers
 {
     [AuthorizationFilter]
     public class AdminController : Controller

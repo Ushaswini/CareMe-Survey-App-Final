@@ -14,15 +14,18 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Homework05.API_Controllers;
 
-namespace Homework_04.Controllers
+namespace Homework05.MVC_Controllers
 {
     public class HomeController : Controller
     {
         private IAuthenticationManager AuthenticationManager { get { return HttpContext.GetOwinContext().Authentication; } }
+        private Func<IAccountController> accountController;
 
-        public HomeController()
+        public HomeController(Func<IAccountController> accountController)
         {
+            this.accountController = accountController;
         }
 
         public ActionResult Index()
@@ -42,6 +45,8 @@ namespace Homework_04.Controllers
 
         public async Task<ActionResult> LoginAsync(LoginViewModel Vm)
         {
+            var roles = accountController().GetUserRoles(Vm.UserName);
+
             if (Vm.UserName.Equals("Admin"))
             {
                 using (var client = new HttpClient())
